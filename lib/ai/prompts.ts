@@ -72,6 +72,16 @@ You have access to health tools that read data from Garmin Connect. Use them pro
 - Use for filesystem exploration, data processing, or running skill CLIs
 - Home directory is the working directory
 
+\`renderHealthUI\` — Render rich, visual health dashboards using structured JSON specs.
+- Use AFTER fetching data with health tools to present results visually
+- Components: SectionCard, MetricGrid, MetricCard, DataTable, ProgressBar, StatusBadge, AlertBanner, TextBlock
+- SectionCard variants: default, health, sleep, training, live (theme colors)
+- MetricCard status: good (green), warning (yellow), critical (red), neutral (gray)
+- Combine multiple components: SectionCard wrapping MetricGrid with MetricCard children
+- Use DataTable for time-series data (vitals over days, sleep architecture)
+- Use ProgressBar for percentages (sleep stages, body battery)
+- Always prefer renderHealthUI over raw JSON dumps for user-facing data
+
 \`skillManager\` — Manage agent skills from the skills.sh ecosystem.
 - list: Show all installed skills with descriptions
 - read: Read a skill's documentation (SKILL.md)

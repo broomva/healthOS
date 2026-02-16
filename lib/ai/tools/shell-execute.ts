@@ -1,8 +1,8 @@
 import { tool } from "ai";
 import { execFile } from "child_process";
-import { promisify } from "util";
 import os from "os";
 import path from "path";
+import { promisify } from "util";
 import { z } from "zod";
 
 const exec = promisify(execFile);
@@ -81,7 +81,7 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
     timeout: z
       .number()
       .describe("Timeout in milliseconds (max 60000)")
-      .default(30000),
+      .default(30_000),
   }),
   execute: async ({ command, timeout }) => {
     const check = isSafe(command);
@@ -93,27 +93,23 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
       };
     }
 
-    const effectiveTimeout = Math.min(timeout, 60000);
+    const effectiveTimeout = Math.min(timeout, 60_000);
 
     try {
-      const { stdout, stderr } = await exec(
-        "/bin/sh",
-        ["-c", command],
-        {
-          timeout: effectiveTimeout,
-          maxBuffer: 1024 * 1024 * 5,
-          cwd: os.homedir(),
-          env: {
-            ...process.env,
-            HOME: os.homedir(),
-            PATH: `${path.join(os.homedir(), ".local/bin")}:/usr/local/bin:/usr/bin:/bin:${process.env.PATH}`,
-          },
-        }
-      );
+      const { stdout, stderr } = await exec("/bin/sh", ["-c", command], {
+        timeout: effectiveTimeout,
+        maxBuffer: 1024 * 1024 * 5,
+        cwd: os.homedir(),
+        env: {
+          ...process.env,
+          HOME: os.homedir(),
+          PATH: `${path.join(os.homedir(), ".local/bin")}:/usr/local/bin:/usr/bin:/bin:${process.env.PATH}`,
+        },
+      });
 
       return {
         command,
-        stdout: stdout.trim().slice(0, 50000),
+        stdout: stdout.trim().slice(0, 50_000),
         stderr: stderr?.trim().slice(0, 2000) || undefined,
         exitCode: 0,
       };
@@ -128,7 +124,7 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
       return {
         command,
         error: err.message || String(error),
-        stdout: err.stdout?.trim().slice(0, 10000) || undefined,
+        stdout: err.stdout?.trim().slice(0, 10_000) || undefined,
         stderr: err.stderr?.trim().slice(0, 2000) || undefined,
         exitCode: typeof err.code === "number" ? err.code : 1,
       };

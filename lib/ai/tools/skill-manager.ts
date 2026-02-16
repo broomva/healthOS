@@ -1,9 +1,9 @@
 import { tool } from "ai";
 import { execFile } from "child_process";
-import { promisify } from "util";
 import { readdir, readFile } from "fs/promises";
 import os from "os";
 import path from "path";
+import { promisify } from "util";
 import { z } from "zod";
 
 const exec = promisify(execFile);
@@ -44,18 +44,13 @@ Skills are installed to ~/.agents/skills/ and provide CLI tools, documentation, 
           const skills = [];
           for (const entry of entries) {
             if (!entry.isDirectory()) continue;
-            const skillMdPath = path.join(
-              SKILLS_DIR,
-              entry.name,
-              "SKILL.md"
-            );
+            const skillMdPath = path.join(SKILLS_DIR, entry.name, "SKILL.md");
             try {
               const content = await readFile(skillMdPath, "utf-8");
               const frontmatter = parseFrontmatter(content);
               skills.push({
                 name: entry.name,
-                description:
-                  frontmatter.description || "(no description)",
+                description: frontmatter.description || "(no description)",
                 path: skillMdPath,
               });
             } catch {
@@ -104,11 +99,7 @@ Skills are installed to ~/.agents/skills/ and provide CLI tools, documentation, 
             };
           } catch {
             // Try CLAUDE.md as fallback
-            const claudeMdPath = path.join(
-              SKILLS_DIR,
-              skill,
-              "CLAUDE.md"
-            );
+            const claudeMdPath = path.join(SKILLS_DIR, skill, "CLAUDE.md");
             try {
               const content = await readFile(claudeMdPath, "utf-8");
               return {
@@ -136,7 +127,7 @@ Skills are installed to ~/.agents/skills/ and provide CLI tools, documentation, 
             "npx",
             ["skills", "find", skill],
             {
-              timeout: 30000,
+              timeout: 30_000,
               maxBuffer: 1024 * 1024,
               env: {
                 ...process.env,
@@ -164,7 +155,7 @@ Skills are installed to ~/.agents/skills/ and provide CLI tools, documentation, 
             "npx",
             ["skills", "add", skill, "-g", "-y"],
             {
-              timeout: 60000,
+              timeout: 60_000,
               maxBuffer: 1024 * 1024,
               env: {
                 ...process.env,
@@ -181,18 +172,14 @@ Skills are installed to ~/.agents/skills/ and provide CLI tools, documentation, 
         }
 
         case "check": {
-          const { stdout, stderr } = await exec(
-            "npx",
-            ["skills", "check"],
-            {
-              timeout: 30000,
-              maxBuffer: 1024 * 1024,
-              env: {
-                ...process.env,
-                PATH: `${path.join(os.homedir(), ".local/bin")}:/usr/local/bin:/usr/bin:/bin:${process.env.PATH}`,
-              },
-            }
-          );
+          const { stdout, stderr } = await exec("npx", ["skills", "check"], {
+            timeout: 30_000,
+            maxBuffer: 1024 * 1024,
+            env: {
+              ...process.env,
+              PATH: `${path.join(os.homedir(), ".local/bin")}:/usr/local/bin:/usr/bin:/bin:${process.env.PATH}`,
+            },
+          });
 
           return {
             stdout: stdout.trim(),

@@ -1,6 +1,9 @@
 "use client";
 
-import { defaultMarkdownParser, defaultMarkdownSerializer } from "prosemirror-markdown";
+import {
+  defaultMarkdownParser,
+  defaultMarkdownSerializer,
+} from "prosemirror-markdown";
 import type { Node } from "prosemirror-model";
 import { Decoration, DecorationSet, type EditorView } from "prosemirror-view";
 import { createSuggestionWidget, type UISuggestion } from "./suggestions";

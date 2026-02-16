@@ -20,16 +20,17 @@ import { entitlementsByUserType } from "@/lib/ai/entitlements";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { getLanguageModel } from "@/lib/ai/providers";
 import { createDocument } from "@/lib/ai/tools/create-document";
-import { getWeather } from "@/lib/ai/tools/get-weather";
+import { garminQuery } from "@/lib/ai/tools/garmin-query";
 import { getHealthSnapshot } from "@/lib/ai/tools/get-health-snapshot";
+import { getRawData } from "@/lib/ai/tools/get-raw-data";
 import { getSleepAnalysis } from "@/lib/ai/tools/get-sleep-analysis";
 import { getTrainingStatus } from "@/lib/ai/tools/get-training-status";
 import { getVitals } from "@/lib/ai/tools/get-vitals";
-import { getRawData } from "@/lib/ai/tools/get-raw-data";
-import { garminQuery } from "@/lib/ai/tools/garmin-query";
+import { getWeather } from "@/lib/ai/tools/get-weather";
+import { renderHealthUI } from "@/lib/ai/tools/render-health-ui";
+import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { shellExecute } from "@/lib/ai/tools/shell-execute";
 import { skillManager } from "@/lib/ai/tools/skill-manager";
-import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { updateDocument } from "@/lib/ai/tools/update-document";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
@@ -219,6 +220,7 @@ export async function POST(request: Request) {
           garminQuery,
           shellExecute,
           skillManager,
+          renderHealthUI,
           createDocument: createDocument({ session, dataStream }),
           updateDocument: updateDocument({ session, dataStream }),
           requestSuggestions: requestSuggestions({ session, dataStream }),
@@ -365,4 +367,3 @@ export async function DELETE(request: Request) {
 
   return Response.json(deletedChat, { status: 200 });
 }
- 

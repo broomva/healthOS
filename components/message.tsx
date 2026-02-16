@@ -17,15 +17,16 @@ import {
   ToolInput,
   ToolOutput,
 } from "./elements/tool";
+import { HealthSnapshot } from "./health-snapshot";
+import { HealthUIRenderer } from "./health-ui-renderer";
 import { SparklesIcon } from "./icons";
 import { MessageActions } from "./message-actions";
 import { MessageEditor } from "./message-editor";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
-import { Weather } from "./weather";
-import { HealthSnapshot } from "./health-snapshot";
 import { SleepOverview } from "./sleep-overview";
 import { TrainingOverview } from "./training-overview";
+import { Weather } from "./weather";
 
 const PurePreviewMessage = ({
   addToolApprovalResponse,
@@ -263,16 +264,27 @@ const PurePreviewMessage = ({
 
             if (type === "tool-getHealthSnapshot") {
               const { toolCallId, state } = part;
-              if (state === "output-available" && part.output && !("error" in part.output)) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                !("error" in part.output)
+              ) {
                 return (
                   <div className="w-full" key={toolCallId}>
                     <HealthSnapshot healthData={part.output} />
                   </div>
                 );
               }
-              if (state === "output-available" && part.output && "error" in part.output) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                "error" in part.output
+              ) {
                 return (
-                  <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50" key={toolCallId}>
+                  <div
+                    className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+                    key={toolCallId}
+                  >
                     {String(part.output.error)}
                   </div>
                 );
@@ -281,7 +293,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getHealthSnapshot" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -289,16 +303,27 @@ const PurePreviewMessage = ({
 
             if (type === "tool-getSleepAnalysis") {
               const { toolCallId, state } = part;
-              if (state === "output-available" && part.output && !("error" in part.output)) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                !("error" in part.output)
+              ) {
                 return (
                   <div className="w-full" key={toolCallId}>
                     <SleepOverview sleepData={part.output} />
                   </div>
                 );
               }
-              if (state === "output-available" && part.output && "error" in part.output) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                "error" in part.output
+              ) {
                 return (
-                  <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50" key={toolCallId}>
+                  <div
+                    className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+                    key={toolCallId}
+                  >
                     {String(part.output.error)}
                   </div>
                 );
@@ -307,7 +332,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getSleepAnalysis" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -315,16 +342,27 @@ const PurePreviewMessage = ({
 
             if (type === "tool-getTrainingStatus") {
               const { toolCallId, state } = part;
-              if (state === "output-available" && part.output && !("error" in part.output)) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                !("error" in part.output)
+              ) {
                 return (
                   <div className="w-full" key={toolCallId}>
                     <TrainingOverview trainingData={part.output} />
                   </div>
                 );
               }
-              if (state === "output-available" && part.output && "error" in part.output) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                "error" in part.output
+              ) {
                 return (
-                  <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50" key={toolCallId}>
+                  <div
+                    className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+                    key={toolCallId}
+                  >
                     {String(part.output.error)}
                   </div>
                 );
@@ -333,7 +371,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getTrainingStatus" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -341,12 +381,18 @@ const PurePreviewMessage = ({
 
             if (type === "tool-getVitals") {
               const { toolCallId, state } = part;
-              if (state === "output-available" && part.output && !("error" in part.output)) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                !("error" in part.output)
+              ) {
                 return (
                   <div className="w-full" key={toolCallId}>
                     <div className="rounded-2xl bg-gradient-to-br from-slate-800 via-blue-900 to-slate-900 p-4 shadow-lg">
-                      <div className="text-white font-semibold text-sm mb-2">Daily Vitals</div>
-                      <pre className="text-xs text-blue-300/80 font-mono whitespace-pre-wrap">
+                      <div className="mb-2 font-semibold text-sm text-white">
+                        Daily Vitals
+                      </div>
+                      <pre className="whitespace-pre-wrap font-mono text-blue-300/80 text-xs">
                         {JSON.stringify(part.output, null, 2)}
                       </pre>
                     </div>
@@ -357,7 +403,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getVitals" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -365,14 +413,20 @@ const PurePreviewMessage = ({
 
             if (type === "tool-getRawData") {
               const { toolCallId, state } = part;
-              if (state === "output-available" && part.output && !("error" in part.output)) {
+              if (
+                state === "output-available" &&
+                part.output &&
+                !("error" in part.output)
+              ) {
                 return (
                   <div className="w-full" key={toolCallId}>
                     <div className="rounded-2xl bg-gray-950 p-4 shadow-lg">
-                      <div className="text-green-400 font-semibold text-sm mb-2">
-                        Raw Garmin Data {(part.output as { date?: string }).date && `— ${(part.output as { date?: string }).date}`}
+                      <div className="mb-2 font-semibold text-green-400 text-sm">
+                        Raw Garmin Data{" "}
+                        {(part.output as { date?: string }).date &&
+                          `— ${(part.output as { date?: string }).date}`}
                       </div>
-                      <pre className="max-h-[400px] overflow-auto text-xs text-green-400/70 font-mono whitespace-pre-wrap">
+                      <pre className="max-h-[400px] overflow-auto whitespace-pre-wrap font-mono text-green-400/70 text-xs">
                         {JSON.stringify(part.output, null, 2)}
                       </pre>
                     </div>
@@ -383,7 +437,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getRawData" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -395,7 +451,10 @@ const PurePreviewMessage = ({
                 const output = part.output as Record<string, unknown>;
                 if ("error" in output) {
                   return (
-                    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50" key={toolCallId}>
+                    <div
+                      className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
+                      key={toolCallId}
+                    >
                       {String(output.error)}
                     </div>
                   );
@@ -403,18 +462,28 @@ const PurePreviewMessage = ({
                 return (
                   <div className="w-full" key={toolCallId}>
                     <div className="rounded-2xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 p-4 shadow-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-emerald-300 font-semibold text-sm">Live Garmin Data</span>
+                      <div className="mb-2 flex items-center gap-2">
+                        <div className="size-2 animate-pulse rounded-full bg-emerald-400" />
+                        <span className="font-semibold text-emerald-300 text-sm">
+                          Live Garmin Data
+                        </span>
                         {"command" in output && (
-                          <code className="ml-auto text-xs text-emerald-500/60 font-mono">{String(output.command)}</code>
+                          <code className="ml-auto font-mono text-emerald-500/60 text-xs">
+                            {String(output.command)}
+                          </code>
                         )}
                       </div>
                       {"description" in output && (
-                        <p className="text-emerald-200/70 text-xs mb-2">{String(output.description)}</p>
+                        <p className="mb-2 text-emerald-200/70 text-xs">
+                          {String(output.description)}
+                        </p>
                       )}
-                      <pre className="max-h-[400px] overflow-auto text-xs text-emerald-300/80 font-mono whitespace-pre-wrap">
-                        {JSON.stringify(output.data || output.rawOutput || output, null, 2)}
+                      <pre className="max-h-[400px] overflow-auto whitespace-pre-wrap font-mono text-emerald-300/80 text-xs">
+                        {JSON.stringify(
+                          output.data || output.rawOutput || output,
+                          null,
+                          2
+                        )}
                       </pre>
                     </div>
                   </div>
@@ -424,7 +493,10 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-garminQuery" />
                   <ToolContent>
-                    {(state === "input-available" || state === "approval-requested") && <ToolInput input={part.input} />}
+                    {(state === "input-available" ||
+                      state === "approval-requested") && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -436,7 +508,10 @@ const PurePreviewMessage = ({
                 const output = part.output as Record<string, unknown>;
                 if ("error" in output && !("stdout" in output)) {
                   return (
-                    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50" key={toolCallId}>
+                    <div
+                      className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
+                      key={toolCallId}
+                    >
                       {String(output.error)}
                     </div>
                   );
@@ -444,20 +519,26 @@ const PurePreviewMessage = ({
                 return (
                   <div className="w-full" key={toolCallId}>
                     <div className="rounded-2xl bg-gray-950 p-4 shadow-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-amber-400 font-mono text-xs">$</span>
-                        <code className="text-amber-300/80 text-xs font-mono">{String(output.command || "")}</code>
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="font-mono text-amber-400 text-xs">
+                          $
+                        </span>
+                        <code className="font-mono text-amber-300/80 text-xs">
+                          {String(output.command || "")}
+                        </code>
                         {"exitCode" in output && output.exitCode !== 0 && (
-                          <span className="ml-auto text-red-400 text-xs">exit {String(output.exitCode)}</span>
+                          <span className="ml-auto text-red-400 text-xs">
+                            exit {String(output.exitCode)}
+                          </span>
                         )}
                       </div>
                       {"stdout" in output && output.stdout ? (
-                        <pre className="max-h-[400px] overflow-auto text-xs text-green-400/80 font-mono whitespace-pre-wrap">
+                        <pre className="max-h-[400px] overflow-auto whitespace-pre-wrap font-mono text-green-400/80 text-xs">
                           {String(output.stdout)}
                         </pre>
                       ) : null}
                       {"stderr" in output && output.stderr ? (
-                        <pre className="text-xs text-red-400/70 font-mono whitespace-pre-wrap mt-1">
+                        <pre className="mt-1 whitespace-pre-wrap font-mono text-red-400/70 text-xs">
                           {String(output.stderr)}
                         </pre>
                       ) : null}
@@ -469,7 +550,9 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-shellExecute" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );
@@ -481,7 +564,10 @@ const PurePreviewMessage = ({
                 const output = part.output as Record<string, unknown>;
                 if ("error" in output) {
                   return (
-                    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50" key={toolCallId}>
+                    <div
+                      className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
+                      key={toolCallId}
+                    >
                       {String(output.error)}
                     </div>
                   );
@@ -491,15 +577,27 @@ const PurePreviewMessage = ({
                   return (
                     <div className="w-full" key={toolCallId}>
                       <div className="rounded-2xl bg-gradient-to-br from-violet-900 via-slate-900 to-slate-900 p-4 shadow-lg">
-                        <div className="text-violet-300 font-semibold text-sm mb-3">
+                        <div className="mb-3 font-semibold text-sm text-violet-300">
                           Installed Skills ({String(output.installedCount)})
                         </div>
                         <div className="grid gap-2 sm:grid-cols-2">
-                          {(output.skills as Array<{name: string; description: string}>).map((skill) => (
-                            <div key={skill.name} className="flex items-start gap-2 rounded-xl border border-white/10 bg-white/5 p-3">
+                          {(
+                            output.skills as Array<{
+                              name: string;
+                              description: string;
+                            }>
+                          ).map((skill) => (
+                            <div
+                              className="flex items-start gap-2 rounded-xl border border-white/10 bg-white/5 p-3"
+                              key={skill.name}
+                            >
                               <div className="min-w-0">
-                                <div className="text-sm font-medium text-white">{skill.name}</div>
-                                <p className="text-xs text-zinc-400 mt-0.5 line-clamp-2">{skill.description}</p>
+                                <div className="font-medium text-sm text-white">
+                                  {skill.name}
+                                </div>
+                                <p className="mt-0.5 line-clamp-2 text-xs text-zinc-400">
+                                  {skill.description}
+                                </p>
                               </div>
                             </div>
                           ))}
@@ -512,8 +610,10 @@ const PurePreviewMessage = ({
                 return (
                   <div className="w-full" key={toolCallId}>
                     <div className="rounded-2xl bg-gradient-to-br from-violet-900 via-slate-900 to-slate-900 p-4 shadow-lg">
-                      <div className="text-violet-300 font-semibold text-sm mb-2">Skills</div>
-                      <pre className="max-h-[400px] overflow-auto text-xs text-violet-300/80 font-mono whitespace-pre-wrap">
+                      <div className="mb-2 font-semibold text-sm text-violet-300">
+                        Skills
+                      </div>
+                      <pre className="max-h-[400px] overflow-auto whitespace-pre-wrap font-mono text-violet-300/80 text-xs">
                         {JSON.stringify(output, null, 2)}
                       </pre>
                     </div>
@@ -524,7 +624,44 @@ const PurePreviewMessage = ({
                 <Tool className="w-full" defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-skillManager" />
                   <ToolContent>
-                    {state === "input-available" && <ToolInput input={part.input} />}
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
+                  </ToolContent>
+                </Tool>
+              );
+            }
+
+            if (type === "tool-renderHealthUI") {
+              const { toolCallId, state } = part;
+              if (state === "output-available" && part.output) {
+                const output = part.output as Record<string, unknown>;
+                if ("error" in output) {
+                  return (
+                    <div
+                      className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
+                      key={toolCallId}
+                    >
+                      {String(output.error)}
+                    </div>
+                  );
+                }
+                return (
+                  <div className="w-full" key={toolCallId}>
+                    <HealthUIRenderer
+                      spec={output.spec as any}
+                      title={String(output.title || "")}
+                    />
+                  </div>
+                );
+              }
+              return (
+                <Tool className="w-full" defaultOpen={true} key={toolCallId}>
+                  <ToolHeader state={state} type="tool-renderHealthUI" />
+                  <ToolContent>
+                    {state === "input-available" && (
+                      <ToolInput input={part.input} />
+                    )}
                   </ToolContent>
                 </Tool>
               );

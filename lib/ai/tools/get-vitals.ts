@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import fs from "fs/promises";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import { z } from "zod";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -23,7 +23,10 @@ export const getVitals = tool({
     try {
       const dailyDir = path.join(DATA_DIR, "daily");
       const files = await fs.readdir(dailyDir);
-      const mdFiles = files.filter((f) => f.endsWith(".md")).sort().reverse();
+      const mdFiles = files
+        .filter((f) => f.endsWith(".md"))
+        .sort()
+        .reverse();
 
       if (mdFiles.length === 0) {
         return { error: "No daily vitals data available." };

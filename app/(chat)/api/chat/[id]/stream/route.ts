@@ -80,9 +80,8 @@ export async function GET(
       execute: () => {},
     });
 
-  const stream = await streamContext.resumableStream(
-    recentStreamId,
-    () => createEmptyDataStream().pipeThrough(new JsonToSseTransformStream())
+  const stream = await streamContext.resumableStream(recentStreamId, () =>
+    createEmptyDataStream().pipeThrough(new JsonToSseTransformStream())
   );
 
   /*
@@ -120,5 +119,8 @@ export async function GET(
     return createUIMessageStreamResponse({ stream: restoredStream });
   }
 
-  return new Response(stream, { status: 200, headers: UI_MESSAGE_STREAM_HEADERS });
+  return new Response(stream, {
+    status: 200,
+    headers: UI_MESSAGE_STREAM_HEADERS,
+  });
 }

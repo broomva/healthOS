@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import fs from "fs/promises";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import { z } from "zod";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -12,14 +12,19 @@ export const getHealthSnapshot = tool({
   inputSchema: z.object({
     week: z
       .string()
-      .describe("Optional week identifier like '2026-W07'. If not provided, returns the latest available week.")
+      .describe(
+        "Optional week identifier like '2026-W07'. If not provided, returns the latest available week."
+      )
       .optional(),
   }),
   execute: async (input) => {
     try {
       const weeklyDir = path.join(DATA_DIR, "weekly");
       const files = await fs.readdir(weeklyDir);
-      const mdFiles = files.filter((f) => f.endsWith(".md")).sort().reverse();
+      const mdFiles = files
+        .filter((f) => f.endsWith(".md"))
+        .sort()
+        .reverse();
 
       if (mdFiles.length === 0) {
         return { error: "No weekly health data available." };

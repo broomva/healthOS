@@ -22,7 +22,8 @@ export const Greeting = () => {
         initial={{ opacity: 0, y: 10 }}
         transition={{ delay: 0.6 }}
       >
-        Tu dashboard de salud esta listo. Pregunta por tu estado de salud, sueno, entrenamiento o signos vitales.
+        Tu dashboard de salud esta listo. Pregunta por tu estado de salud,
+        sueno, entrenamiento o signos vitales.
       </motion.div>
     </div>
   );

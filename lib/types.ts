@@ -2,16 +2,17 @@ import type { InferUITool, UIMessage } from "ai";
 import { z } from "zod";
 import type { ArtifactKind } from "@/components/artifact";
 import type { createDocument } from "./ai/tools/create-document";
-import type { getWeather } from "./ai/tools/get-weather";
+import type { garminQuery } from "./ai/tools/garmin-query";
 import type { getHealthSnapshot } from "./ai/tools/get-health-snapshot";
+import type { getRawData } from "./ai/tools/get-raw-data";
 import type { getSleepAnalysis } from "./ai/tools/get-sleep-analysis";
 import type { getTrainingStatus } from "./ai/tools/get-training-status";
 import type { getVitals } from "./ai/tools/get-vitals";
-import type { getRawData } from "./ai/tools/get-raw-data";
-import type { garminQuery } from "./ai/tools/garmin-query";
+import type { getWeather } from "./ai/tools/get-weather";
+import type { renderHealthUI } from "./ai/tools/render-health-ui";
+import type { requestSuggestions } from "./ai/tools/request-suggestions";
 import type { shellExecute } from "./ai/tools/shell-execute";
 import type { skillManager } from "./ai/tools/skill-manager";
-import type { requestSuggestions } from "./ai/tools/request-suggestions";
 import type { updateDocument } from "./ai/tools/update-document";
 import type { Suggestion } from "./db/schema";
 
@@ -32,6 +33,7 @@ type rawDataTool = InferUITool<typeof getRawData>;
 type garminQueryTool = InferUITool<typeof garminQuery>;
 type shellExecuteTool = InferUITool<typeof shellExecute>;
 type skillManagerTool = InferUITool<typeof skillManager>;
+type renderHealthUITool = InferUITool<typeof renderHealthUI>;
 type createDocumentTool = InferUITool<ReturnType<typeof createDocument>>;
 type updateDocumentTool = InferUITool<ReturnType<typeof updateDocument>>;
 type requestSuggestionsTool = InferUITool<
@@ -48,6 +50,7 @@ export type ChatTools = {
   garminQuery: garminQueryTool;
   shellExecute: shellExecuteTool;
   skillManager: skillManagerTool;
+  renderHealthUI: renderHealthUITool;
   createDocument: createDocumentTool;
   updateDocument: updateDocumentTool;
   requestSuggestions: requestSuggestionsTool;

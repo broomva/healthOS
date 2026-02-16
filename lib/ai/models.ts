@@ -1,4 +1,4 @@
-export const DEFAULT_CHAT_MODEL = "claude-haiku-4-5-20251001";
+export const DEFAULT_CHAT_MODEL = "anthropic:claude-haiku-4-5-20251001";
 
 export type ChatModel = {
   id: string;
@@ -8,23 +8,68 @@ export type ChatModel = {
 };
 
 export const chatModels: ChatModel[] = [
+  // Anthropic
   {
-    id: "claude-haiku-4-5-20251001",
+    id: "anthropic:claude-haiku-4-5-20251001",
     name: "Claude Haiku 4.5",
     provider: "anthropic",
     description: "Fast and affordable, great for everyday tasks",
   },
   {
-    id: "claude-sonnet-4-5-20250929",
+    id: "anthropic:claude-sonnet-4-5-20250929",
     name: "Claude Sonnet 4.5",
     provider: "anthropic",
     description: "Best balance of speed, intelligence, and cost",
   },
   {
-    id: "claude-opus-4-6",
+    id: "anthropic:claude-opus-4-6",
     name: "Claude Opus 4.6",
     provider: "anthropic",
     description: "Most capable model for complex analysis",
+  },
+  // OpenAI
+  {
+    id: "openai:gpt-4.1-mini",
+    name: "GPT-4.1 Mini",
+    provider: "openai",
+    description: "Fast and cost-effective for simple tasks",
+  },
+  {
+    id: "openai:gpt-4.1",
+    name: "GPT-4.1",
+    provider: "openai",
+    description: "Strong general-purpose model",
+  },
+  {
+    id: "openai:o3-mini",
+    name: "o3 Mini",
+    provider: "openai",
+    description: "Reasoning model, great for complex problems",
+  },
+  // Ollama (local)
+  {
+    id: "ollama:llama3.3",
+    name: "Llama 3.3 70B",
+    provider: "ollama",
+    description: "Local — Meta's strongest open model",
+  },
+  {
+    id: "ollama:qwen3:32b",
+    name: "Qwen 3 32B",
+    provider: "ollama",
+    description: "Local — Strong multilingual reasoning",
+  },
+  {
+    id: "ollama:deepseek-r1:14b",
+    name: "DeepSeek R1 14B",
+    provider: "ollama",
+    description: "Local — Reasoning-focused open model",
+  },
+  {
+    id: "ollama:mistral",
+    name: "Mistral 7B",
+    provider: "ollama",
+    description: "Local — Fast and lightweight",
   },
 ];
 

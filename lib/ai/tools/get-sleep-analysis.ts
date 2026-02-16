@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import fs from "fs/promises";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import { z } from "zod";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -12,14 +12,19 @@ export const getSleepAnalysis = tool({
   inputSchema: z.object({
     period: z
       .enum(["latest", "full"])
-      .describe("'latest' for the most recent analysis, 'full' for the complete historical analysis")
+      .describe(
+        "'latest' for the most recent analysis, 'full' for the complete historical analysis"
+      )
       .default("latest"),
   }),
   execute: async (input) => {
     try {
       const sleepDir = path.join(DATA_DIR, "sleep");
       const files = await fs.readdir(sleepDir);
-      const mdFiles = files.filter((f) => f.endsWith(".md")).sort().reverse();
+      const mdFiles = files
+        .filter((f) => f.endsWith(".md"))
+        .sort()
+        .reverse();
 
       if (mdFiles.length === 0) {
         return { error: "No sleep analysis data available." };

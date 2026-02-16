@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import fs from "fs/promises";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import { z } from "zod";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -12,14 +12,19 @@ export const getTrainingStatus = tool({
   inputSchema: z.object({
     date: z
       .string()
-      .describe("Optional date in YYYY-MM-DD format. Defaults to the latest available.")
+      .describe(
+        "Optional date in YYYY-MM-DD format. Defaults to the latest available."
+      )
       .optional(),
   }),
   execute: async (input) => {
     try {
       const trainingDir = path.join(DATA_DIR, "training");
       const files = await fs.readdir(trainingDir);
-      const mdFiles = files.filter((f) => f.endsWith(".md")).sort().reverse();
+      const mdFiles = files
+        .filter((f) => f.endsWith(".md"))
+        .sort()
+        .reverse();
 
       if (mdFiles.length === 0) {
         return { error: "No training data available." };
@@ -31,7 +36,10 @@ export const getTrainingStatus = tool({
         if (match) targetFile = match;
       }
 
-      const raw = await fs.readFile(path.join(trainingDir, targetFile), "utf-8");
+      const raw = await fs.readFile(
+        path.join(trainingDir, targetFile),
+        "utf-8"
+      );
       const { data: frontmatter, content } = matter(raw);
 
       return {

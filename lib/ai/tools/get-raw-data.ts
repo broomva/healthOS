@@ -18,7 +18,10 @@ export const getRawData = tool({
     try {
       const rawDir = path.join(DATA_DIR, "raw");
       const files = await fs.readdir(rawDir);
-      const jsonFiles = files.filter((f) => f.endsWith(".json")).sort().reverse();
+      const jsonFiles = files
+        .filter((f) => f.endsWith(".json"))
+        .sort()
+        .reverse();
 
       if (jsonFiles.length === 0) {
         return { error: "No raw data available." };

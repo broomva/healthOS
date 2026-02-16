@@ -5,8 +5,8 @@
 "use client";
 
 import { defineRegistry } from "@json-render/react";
-import { healthCatalog } from "./catalog";
 import { cn } from "@/lib/utils";
+import { healthCatalog } from "./catalog";
 
 const STATUS_COLORS = {
   good: "text-emerald-400",
@@ -55,11 +55,11 @@ export const { registry } = defineRegistry(healthCatalog, {
   components: {
     MetricCard: ({ props, children }) => (
       <div className="rounded-xl bg-white/5 p-3 backdrop-blur-sm">
-        <div className="text-xs text-zinc-400 mb-1">{props.label}</div>
+        <div className="mb-1 text-xs text-zinc-400">{props.label}</div>
         <div className="flex items-baseline gap-1">
           <span
             className={cn(
-              "text-xl font-bold",
+              "font-bold text-xl",
               props.status ? STATUS_COLORS[props.status] : "text-white"
             )}
           >
@@ -71,7 +71,7 @@ export const { registry } = defineRegistry(healthCatalog, {
           {props.trend && (
             <span
               className={cn(
-                "text-sm ml-1",
+                "ml-1 text-sm",
                 props.trend === "up" && "text-emerald-400",
                 props.trend === "down" && "text-red-400",
                 props.trend === "stable" && "text-zinc-400"
@@ -102,22 +102,22 @@ export const { registry } = defineRegistry(healthCatalog, {
     DataTable: ({ props }) => (
       <div className="overflow-x-auto">
         {props.title && (
-          <div className="text-sm font-semibold text-zinc-300 mb-2">
+          <div className="mb-2 font-semibold text-sm text-zinc-300">
             {props.title}
           </div>
         )}
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-white/10 border-b">
               {props.columns.map((col) => (
                 <th
-                  key={col.key}
                   className={cn(
                     "px-3 py-2 font-medium text-zinc-400",
                     col.align === "right" && "text-right",
                     col.align === "center" && "text-center",
                     (!col.align || col.align === "left") && "text-left"
                   )}
+                  key={col.key}
                 >
                   {col.label}
                 </th>
@@ -126,15 +126,15 @@ export const { registry } = defineRegistry(healthCatalog, {
           </thead>
           <tbody>
             {props.rows.map((row, i) => (
-              <tr key={i} className="border-b border-white/5">
+              <tr className="border-white/5 border-b" key={i}>
                 {props.columns.map((col) => (
                   <td
-                    key={col.key}
                     className={cn(
                       "px-3 py-2 text-zinc-300",
                       col.align === "right" && "text-right",
                       col.align === "center" && "text-center"
                     )}
+                    key={col.key}
                   >
                     {String(row[col.key] ?? "")}
                   </td>
@@ -149,7 +149,7 @@ export const { registry } = defineRegistry(healthCatalog, {
     StatusBadge: ({ props }) => (
       <span
         className={cn(
-          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium",
+          "inline-flex items-center rounded-full border px-2.5 py-0.5 font-medium text-xs",
           STATUS_BG[props.status]
         )}
       >
@@ -183,9 +183,9 @@ export const { registry } = defineRegistry(healthCatalog, {
         )}
       >
         <div className="mb-3">
-          <div className="text-white font-semibold text-sm">{props.title}</div>
+          <div className="font-semibold text-sm text-white">{props.title}</div>
           {props.subtitle && (
-            <div className="text-zinc-400 text-xs mt-0.5">{props.subtitle}</div>
+            <div className="mt-0.5 text-xs text-zinc-400">{props.subtitle}</div>
           )}
         </div>
         {children}
@@ -219,11 +219,11 @@ export const { registry } = defineRegistry(healthCatalog, {
 
     JsonViewer: ({ props }) => (
       <details className="group">
-        <summary className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
+        <summary className="cursor-pointer text-xs text-zinc-500 transition-colors hover:text-zinc-300">
           {props.title || "View JSON data"}
         </summary>
         <pre
-          className="mt-2 overflow-auto text-xs text-emerald-300/70 font-mono whitespace-pre-wrap bg-black/30 rounded-lg p-3"
+          className="mt-2 overflow-auto whitespace-pre-wrap rounded-lg bg-black/30 p-3 font-mono text-emerald-300/70 text-xs"
           style={{ maxHeight: props.maxHeight || 300 }}
         >
           {props.data}
@@ -233,15 +233,15 @@ export const { registry } = defineRegistry(healthCatalog, {
 
     SkillCard: ({ props }) => (
       <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm">
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-sm text-white truncate">
+            <span className="truncate font-medium text-sm text-white">
               {props.name}
             </span>
             {props.installed !== undefined && (
               <span
                 className={cn(
-                  "inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium",
+                  "inline-flex items-center rounded-full px-1.5 py-0.5 font-medium text-[10px]",
                   props.installed
                     ? "bg-emerald-500/20 text-emerald-300"
                     : "bg-zinc-500/20 text-zinc-400"
@@ -251,11 +251,11 @@ export const { registry } = defineRegistry(healthCatalog, {
               </span>
             )}
           </div>
-          <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
+          <p className="mt-1 line-clamp-2 text-xs text-zinc-400">
             {props.description}
           </p>
           {props.source && (
-            <code className="text-[10px] text-zinc-600 mt-1 block truncate">
+            <code className="mt-1 block truncate text-[10px] text-zinc-600">
               {props.source}
             </code>
           )}
