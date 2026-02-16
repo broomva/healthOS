@@ -1,21 +1,21 @@
 {
-  "name": "health-dashboard",
+  "name": "healthos",
   "version": "3.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "tsx lib/db/migrate && next build",
+    "build": "bun lib/db/migrate.ts && next build",
     "start": "next start",
-    "lint": "npx ultracite@latest check",
-    "format": "npx ultracite@latest fix",
+    "lint": "bunx ultracite@latest check",
+    "format": "bunx ultracite@latest fix",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx tsx lib/db/migrate.ts",
+    "db:migrate": "bun ./lib/db/migrate.ts",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && bun x playwright test"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "3.0.0-beta.90",
@@ -126,5 +126,5 @@
     "typescript": "^5.6.3",
     "ultracite": "5.3.9"
   },
-  "packageManager": "pnpm@9.12.3"
+  "packageManager": "bun@1.2.4"
 }
