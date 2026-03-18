@@ -29,6 +29,18 @@ export const chatModels: ChatModel[] = [
   },
   // OpenAI
   {
+    id: "openai:gpt-5.2",
+    name: "GPT-5.2 Chat",
+    provider: "openai",
+    description: "Flagship model for advanced reasoning and logic",
+  },
+  {
+    id: "openai:gpt-5-mini",
+    name: "GPT-5 Mini",
+    provider: "openai",
+    description: "Fast, cost-efficient reasoning model",
+  },
+  {
     id: "openai:gpt-4.1-mini",
     name: "GPT-4.1 Mini",
     provider: "openai",
@@ -47,6 +59,18 @@ export const chatModels: ChatModel[] = [
     description: "Reasoning model, great for complex problems",
   },
   // Ollama (local)
+  {
+    id: "ollama:gpt-oss:120b",
+    name: "GPT-OSS 120B",
+    provider: "ollama",
+    description: "Local — Powerful open weight GPT alternative",
+  },
+  {
+    id: "ollama:gpt-oss:20b",
+    name: "GPT-OSS 20B",
+    provider: "ollama",
+    description: "Local — Open source GPT alternative",
+  },
   {
     id: "ollama:llama3.3",
     name: "Llama 3.3 70B",
