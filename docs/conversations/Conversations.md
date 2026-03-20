@@ -6,8 +6,8 @@ tags:
   - moc
 type: moc
 status: active
-created: 2026-03-18
-updated: 2026-03-18
+created: 2026-03-19
+updated: 2026-03-19
 related:
   - "[[Documentation Hub]]"
   - "[[CLAUDE]]"
@@ -22,7 +22,7 @@ related:
 > tool usage, files modified, and commits — linking agent work to the
 > knowledge graph.
 
-**Total sessions indexed**: 6
+**Total sessions indexed**: 5
 
 ## 2026-03-17
 
@@ -38,12 +38,6 @@ related:
 |---------|--------|-------|----------|-------|
 | [[session-2026-02-18-c13474dd]] | `main` | 12 | 4h 6m | how to connect to my macos from my iphone using ta |
 
-## 2026-02-17
-
-| Session | Branch | Turns | Duration | Topic |
-|---------|--------|-------|----------|-------|
-| [[session-2026-02-17-10486609]] | `main` | 3 | 0m | <command-name>/model</command-name>             <c |
-
 ## 
 
 | Session | Branch | Turns | Duration | Topic |
@@ -52,7 +46,7 @@ related:
 
 ## Statistics
 
-- **Total turns**: 69
+- **Total turns**: 66
 - **Branches worked on**: 1
 - **Date range**:  → 2026-03-17
 
