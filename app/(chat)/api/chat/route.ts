@@ -46,6 +46,7 @@ import {
 } from "@/lib/db/queries";
 import type { DBMessage } from "@/lib/db/schema";
 import { ChatSDKError } from "@/lib/errors";
+import { logger } from "@/lib/observability/logger";
 import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
@@ -84,6 +85,10 @@ export function getStreamContext() {
 }
 
 export async function POST(request: Request) {
+  const reqLog = logger.request("/api/chat", {
+    method: "POST",
+  });
+
   let requestBody: PostRequestBody;
 
   try {
@@ -96,6 +101,12 @@ export async function POST(request: Request) {
   try {
     const { id, message, messages, selectedChatModel, selectedVisibilityType } =
       requestBody;
+
+    logger.info("chat:params", {
+      chatId: id,
+      model: selectedChatModel,
+      isToolApproval: Boolean(messages),
+    });
 
     const session = await auth();
 
@@ -320,11 +331,11 @@ export async function POST(request: Request) {
       return createUIMessageStreamResponse({ stream: streamForFallback });
     }
 
+    reqLog.done(200, { chatId: requestBody.id, model: requestBody.selectedChatModel });
     return createUIMessageStreamResponse({ stream });
   } catch (error) {
-    const vercelId = request.headers.get("x-vercel-id");
-
     if (error instanceof ChatSDKError) {
+      reqLog.error(error, { code: `${error.type}:${error.surface}` });
       return error.toResponse();
     }
 
@@ -335,10 +346,14 @@ export async function POST(request: Request) {
         "AI Gateway requires a valid credit card on file to service requests"
       )
     ) {
+      reqLog.error(error, { code: "bad_request:activate_gateway" });
       return new ChatSDKError("bad_request:activate_gateway").toResponse();
     }
 
-    console.error("Unhandled error in chat API:", error, { vercelId });
+    logger.error("chat:unhandled", error, {
+      chatId: requestBody.id,
+      model: requestBody.selectedChatModel,
+    });
     return new ChatSDKError("offline:chat").toResponse();
   }
 }

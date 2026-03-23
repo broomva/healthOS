@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 export type ErrorType =
   | "bad_request"
   | "unauthorized"
@@ -59,10 +61,13 @@ export class ChatSDKError extends Error {
     const { message, cause, statusCode } = this;
 
     if (visibility === "log") {
-      console.error({
-        code,
-        message,
-        cause,
+      console.error(
+        JSON.stringify({ level: "error", code, message, cause, service: "healthos" })
+      );
+
+      Sentry.captureException(this, {
+        tags: { errorType: this.type, surface: this.surface },
+        extra: { code, cause },
       });
 
       return Response.json(
