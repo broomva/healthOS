@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import matter from "gray-matter";
 import path from "path";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 

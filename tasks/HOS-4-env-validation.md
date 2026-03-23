@@ -1,10 +1,12 @@
 ---
+
 title: "Add centralized environment variable validation with Zod"
 identifier: "HOS-4"
 id: "HOS-4"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
+updated_at: "2026-03-23T21:50:39.625775+00:00"
 ---
 
 # HOS-4: Add centralized environment variable validation with Zod

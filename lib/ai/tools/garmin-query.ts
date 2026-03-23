@@ -5,6 +5,7 @@ import os from "os";
 import path from "path";
 import { promisify } from "util";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const exec = promisify(execFile);
 const GARMIN_CLI = path.join(os.homedir(), ".local/bin/garmin-connect");
