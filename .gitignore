@@ -44,4 +44,4 @@ yarn-error.log*
 /playwright/*
 
 
-/data/*
+/data/*docs/conversations/session-*.md
