@@ -124,7 +124,8 @@
     "postcss": "^8",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "ultracite": "^7.3.2"
   },
   "packageManager": "bun@1.2.4"
 }
