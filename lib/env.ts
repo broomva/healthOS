@@ -16,6 +16,7 @@ const envSchema = z.object({
 
   // Observability — Sentry error tracking
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+  NEXT_PUBLIC_SENTRY_ENVIRONMENT: z.string().optional(),
   SENTRY_ENVIRONMENT: z.string().optional(),
 
   // Environment detection — always available via Node.js runtime

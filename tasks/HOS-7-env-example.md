@@ -1,10 +1,12 @@
 ---
+
 title: "Update .env.example with all required environment variables"
 identifier: "HOS-7"
 id: "HOS-7"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
+updated_at: "2026-03-23T21:50:03.290071+00:00"
 ---
 
 # HOS-7: Update .env.example with all required environment variables

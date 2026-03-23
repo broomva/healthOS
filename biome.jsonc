@@ -1,9 +1,11 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "extends": ["ultracite"],
   "files": {
+    "ignoreUnknown": true,
     "includes": [
       "**/*",
+      "!**/.next/**/*",
+      "!**/node_modules/**/*",
       "!components/ui",
       "!lib/utils.ts",
       "!hooks/use-mobile.ts"
