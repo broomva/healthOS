@@ -14,6 +14,10 @@ const envSchema = z.object({
   BLOB_READ_WRITE_TOKEN: z.string().optional(),
   REDIS_URL: z.string().optional(),
 
+  // Observability — Sentry error tracking
+  NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+  SENTRY_ENVIRONMENT: z.string().optional(),
+
   // Environment detection — always available via Node.js runtime
   NODE_ENV: z.enum(["development", "production", "test"]).optional().default("development"),
 });
