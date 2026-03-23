@@ -11,8 +11,10 @@ import { isTestEnvironment } from "../constants";
 const openai = createOpenAI({});
 
 // Ollama provider (OpenAI-compatible API on localhost)
+import { env } from "../env";
+
 const ollama = createOpenAI({
-  baseURL: process.env.OLLAMA_BASE_URL || "http://localhost:11434/v1",
+  baseURL: env().OLLAMA_BASE_URL,
   apiKey: "ollama", // Ollama doesn't need a real key
 });
 
