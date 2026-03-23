@@ -4,6 +4,7 @@ import os from "os";
 import path from "path";
 import { promisify } from "util";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const exec = promisify(execFile);
 
@@ -84,8 +85,10 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
       .default(30_000),
   }),
   execute: async ({ command, timeout }) => {
+    const log = logger.tool("shellExecute", { command: command.slice(0, 100) });
     const check = isSafe(command);
     if (!check.safe) {
+      log.done({ blocked: true, reason: check.reason });
       return {
         error: check.reason,
         command,
@@ -107,6 +110,7 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
         },
       });
 
+      log.done({ exitCode: 0, outputSize: stdout.length });
       return {
         command,
         stdout: stdout.trim().slice(0, 50_000),
@@ -114,6 +118,7 @@ Commands are validated against an allowlist. Dangerous patterns (rm -rf, sudo, e
         exitCode: 0,
       };
     } catch (error: unknown) {
+      log.error(error);
       const err = error as {
         code?: string | number;
         stderr?: string;

@@ -19,6 +19,7 @@ export const getHealthSnapshot = tool({
       .optional(),
   }),
   execute: async (input) => {
+    const log = logger.tool("getHealthSnapshot", { week: input.week });
     try {
       const weeklyDir = path.join(DATA_DIR, "weekly");
       const files = await fs.readdir(weeklyDir);
@@ -28,6 +29,7 @@ export const getHealthSnapshot = tool({
         .reverse();
 
       if (mdFiles.length === 0) {
+        log.done({ empty: true });
         return { error: "No weekly health data available." };
       }
 
@@ -40,6 +42,7 @@ export const getHealthSnapshot = tool({
       const raw = await fs.readFile(path.join(weeklyDir, targetFile), "utf-8");
       const { data: frontmatter, content } = matter(raw);
 
+      log.done({ week: frontmatter.week, alertCount: (frontmatter.alerts || []).length });
       return {
         week: frontmatter.week,
         dateRange: frontmatter.dateRange,
@@ -49,6 +52,7 @@ export const getHealthSnapshot = tool({
         analysis: content.trim(),
       };
     } catch (error) {
+      log.error(error);
       return { error: `Failed to read health snapshot: ${error}` };
     }
   },

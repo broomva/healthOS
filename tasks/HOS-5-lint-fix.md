@@ -1,10 +1,12 @@
 ---
+
 title: "Fix lint tooling mismatch between Makefile and package.json"
 identifier: "HOS-5"
 id: "HOS-5"
-state: todo
+state: done
 priority: 3
 project: "healthOS"
+updated_at: "2026-03-23T21:51:27.113417+00:00"
 ---
 
 # HOS-5: Fix lint tooling mismatch between Makefile and package.json

@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import matter from "gray-matter";
 import path from "path";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -20,6 +21,7 @@ export const getVitals = tool({
       .default(1),
   }),
   execute: async (input) => {
+    const log = logger.tool("getVitals", { date: input.date, days: input.days });
     try {
       const dailyDir = path.join(DATA_DIR, "daily");
       const files = await fs.readdir(dailyDir);
@@ -29,6 +31,7 @@ export const getVitals = tool({
         .reverse();
 
       if (mdFiles.length === 0) {
+        log.done({ empty: true });
         return { error: "No daily vitals data available." };
       }
 
@@ -56,11 +59,13 @@ export const getVitals = tool({
         })
       );
 
+      log.done({ count: results.length });
       return {
         days: results,
         count: results.length,
       };
     } catch (error) {
+      log.error(error);
       return { error: `Failed to read vitals: ${error}` };
     }
   },

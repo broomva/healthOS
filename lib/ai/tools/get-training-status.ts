@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import matter from "gray-matter";
 import path from "path";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -18,6 +19,7 @@ export const getTrainingStatus = tool({
       .optional(),
   }),
   execute: async (input) => {
+    const log = logger.tool("getTrainingStatus", { date: input.date });
     try {
       const trainingDir = path.join(DATA_DIR, "training");
       const files = await fs.readdir(trainingDir);
@@ -27,6 +29,7 @@ export const getTrainingStatus = tool({
         .reverse();
 
       if (mdFiles.length === 0) {
+        log.done({ empty: true });
         return { error: "No training data available." };
       }
 
@@ -42,12 +45,14 @@ export const getTrainingStatus = tool({
       );
       const { data: frontmatter, content } = matter(raw);
 
+      log.done({ date: frontmatter.date });
       return {
         date: frontmatter.date,
         metrics: frontmatter.metrics,
         analysis: content.trim(),
       };
     } catch (error) {
+      log.error(error);
       return { error: `Failed to read training status: ${error}` };
     }
   },

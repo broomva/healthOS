@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { garminQuery } from "../lib/ai/tools/garmin-query";
 import { getHealthSnapshot } from "../lib/ai/tools/get-health-snapshot";
+import { getRawData } from "../lib/ai/tools/get-raw-data";
+import { getSleepAnalysis } from "../lib/ai/tools/get-sleep-analysis";
 import { getTrainingStatus } from "../lib/ai/tools/get-training-status";
 import { getVitals } from "../lib/ai/tools/get-vitals";
 import { renderHealthUI } from "../lib/ai/tools/render-health-ui";
@@ -289,4 +291,219 @@ describe("renderHealthUI", () => {
     expect(result.error).toContain("missing-child");
     expect(result.error).toContain("does not exist");
   });
+
+  test("handles single-element spec with no children", async () => {
+    const result = await exec(renderHealthUI, {
+      title: "Simple Badge",
+      spec: {
+        root: "badge-1",
+        elements: {
+          "badge-1": {
+            type: "StatusBadge",
+            props: { status: "good", label: "All Clear" },
+          },
+        },
+      },
+    });
+
+    expect(result).not.toHaveProperty("error");
+    expect(result.componentCount).toBe(1);
+    expect(result.title).toBe("Simple Badge");
+  });
+
+  test("renders deeply nested spec tree", async () => {
+    const result = await exec(renderHealthUI, {
+      title: "Nested Dashboard",
+      spec: {
+        root: "root",
+        elements: {
+          root: {
+            type: "SectionCard",
+            props: { title: "Root" },
+            children: ["child"],
+          },
+          child: {
+            type: "SectionCard",
+            props: { title: "Child" },
+            children: ["grandchild"],
+          },
+          grandchild: {
+            type: "MetricCard",
+            props: { label: "Deep", value: "42" },
+          },
+        },
+      },
+    });
+
+    expect(result).not.toHaveProperty("error");
+    expect(result.componentCount).toBe(3);
+  });
+});
+
+// ─── Sleep Analysis ───────────────────────────────────────────────
+
+describe("getSleepAnalysis", () => {
+  test("returns latest sleep analysis with summary metrics", async () => {
+    const result = await exec(getSleepAnalysis, { period: "latest" });
+
+    expect(result).not.toHaveProperty("error");
+    expect(result).toHaveProperty("periodCovered");
+    expect(result).toHaveProperty("dataPoints");
+    expect(result).toHaveProperty("summary");
+    expect(result).toHaveProperty("analysis");
+    expect(typeof result.analysis).toBe("string");
+    expect(result.analysis.length).toBeGreaterThan(0);
+  });
+
+  test("parses sleep summary with key metrics and trends", async () => {
+    const result = await exec(getSleepAnalysis, { period: "latest" });
+
+    expect(result.dataPoints).toBe(52);
+    expect(result.periodCovered).toBe("2025-12-18 to 2026-02-12");
+
+    const { summary } = result;
+    expect(summary.overallScore).toBe(72);
+    expect(summary.overallTrend).toBe("declining");
+    expect(summary.keyMetrics.avgSleepScore).toBe(72);
+    expect(summary.keyMetrics.avgDuration).toBe(7.0);
+    expect(summary.keyMetrics.avgDeepPct).toBe(16.1);
+    expect(summary.keyMetrics.avgRemPct).toBe(15.2);
+    expect(summary.keyMetrics.avgHrv).toBe(46);
+    expect(summary.keyMetrics.avgRhr).toBe(53.7);
+    expect(summary.keyMetrics.avgSpo2).toBe(92.0);
+  });
+
+  test("includes monthly trend breakdown", async () => {
+    const result = await exec(getSleepAnalysis, { period: "latest" });
+
+    const { monthlyTrend } = result.summary;
+    expect(monthlyTrend).toHaveProperty("december");
+    expect(monthlyTrend).toHaveProperty("january");
+    expect(monthlyTrend).toHaveProperty("february");
+
+    // December had better sleep than February
+    expect(monthlyTrend.december.score).toBeGreaterThan(
+      monthlyTrend.february.score,
+    );
+    // HRV declined from December to February
+    expect(monthlyTrend.december.hrv).toBeGreaterThan(
+      monthlyTrend.february.hrv,
+    );
+  });
+
+  test("includes primary concerns in summary", async () => {
+    const result = await exec(getSleepAnalysis, { period: "latest" });
+
+    expect(Array.isArray(result.summary.primaryConcerns)).toBe(true);
+    expect(result.summary.primaryConcerns.length).toBeGreaterThan(0);
+    // Should flag REM and deep sleep issues
+    const concerns = result.summary.primaryConcerns.join(" ");
+    expect(concerns).toContain("REM");
+    expect(concerns).toContain("Deep sleep");
+  });
+
+  test("defaults to latest period when called with no args", async () => {
+    const result = await exec(getSleepAnalysis, {});
+
+    expect(result).not.toHaveProperty("error");
+    expect(result).toHaveProperty("periodCovered");
+    expect(result).toHaveProperty("summary");
+  });
+});
+
+// ─── Raw Data ─────────────────────────────────────────────────────
+
+describe("getRawData", () => {
+  test("returns raw JSON data for a specific date", async () => {
+    const result = await exec(getRawData, { date: "2026-02-13" });
+
+    expect(result).not.toHaveProperty("error");
+    expect(result.date).toBe("2026-02-13");
+    expect(result).toHaveProperty("data");
+    expect(result).toHaveProperty("sizeBytes");
+    expect(result.sizeBytes).toBeGreaterThan(0);
+  });
+
+  test("returns latest raw data when no date specified", async () => {
+    const result = await exec(getRawData, {});
+
+    expect(result).not.toHaveProperty("error");
+    expect(result).toHaveProperty("date");
+    expect(result).toHaveProperty("data");
+    expect(typeof result.data).toBe("object");
+  });
+
+  test("raw data contains athlete profile and source metadata", async () => {
+    const result = await exec(getRawData, { date: "2026-02-13" });
+
+    expect(result.data.source).toBe("garmin-connect");
+    expect(result.data).toHaveProperty("athlete_profile");
+    expect(result.data.athlete_profile).toHaveProperty("userData");
+  });
+
+  test("returns error for nonexistent date", async () => {
+    const result = await exec(getRawData, { date: "1999-01-01" });
+
+    expect(result).toHaveProperty("error");
+    expect(result.error).toContain("No raw data for date 1999-01-01");
+    expect(result.error).toContain("Available:");
+  });
+});
+
+// ─── Garmin Query — Additional Fallback Cases ─────────────────────
+
+describe("garminQuery — fallback descriptions", () => {
+  test(
+    "returns correct description for context command",
+    async () => {
+      const result = await exec(garminQuery, {
+        command: "context",
+        args: [],
+      });
+
+      expect(result).toBeDefined();
+      if (result.unavailable) {
+        expect(result.command).toBe("garmin-connect context");
+        expect(result.description).toContain("Aggregated health snapshot");
+      }
+    },
+    { timeout: 35_000 },
+  );
+
+  test(
+    "returns correct description for heart-rate command",
+    async () => {
+      const result = await exec(garminQuery, {
+        command: "health heart-rate",
+        args: [],
+      });
+
+      expect(result).toBeDefined();
+      if (result.unavailable) {
+        expect(result.command).toBe("garmin-connect health heart-rate");
+        expect(result.description).toContain("Heart rate data");
+      }
+    },
+    { timeout: 35_000 },
+  );
+
+  test(
+    "passes additional args through to the command",
+    async () => {
+      const result = await exec(garminQuery, {
+        command: "health sleep",
+        args: ["--date", "2026-02-10"],
+      });
+
+      expect(result).toBeDefined();
+      // Whether CLI is available or not, the tool must not throw
+      if (result.unavailable) {
+        expect(result.command).toBe("garmin-connect health sleep");
+      } else if (!result.error) {
+        expect(result.command).toContain("--date");
+        expect(result.command).toContain("2026-02-10");
+      }
+    },
+    { timeout: 35_000 },
+  );
 });

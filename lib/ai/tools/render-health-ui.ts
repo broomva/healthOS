@@ -1,5 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const uiElementSchema = z.object({
   type: z.string().describe("Component name from the catalog"),
@@ -47,8 +48,12 @@ Use this tool AFTER fetching data with health tools. Transform the raw data into
     spec: specSchema,
   }),
   execute: async ({ title, spec }) => {
+    const componentCount = Object.keys(spec.elements).length;
+    const log = logger.tool("renderHealthUI", { title, componentCount });
+
     // Validate that root exists in elements
     if (!spec.elements[spec.root]) {
+      log.done({ validationError: "missing_root" });
       return {
         error: `Root element "${spec.root}" not found in elements map`,
       };
@@ -59,6 +64,7 @@ Use this tool AFTER fetching data with health tools. Transform the raw data into
       if (element.children) {
         for (const childKey of element.children) {
           if (!spec.elements[childKey]) {
+            log.done({ validationError: "missing_child", key, childKey });
             return {
               error: `Element "${key}" references child "${childKey}" which does not exist in elements map`,
             };
@@ -67,10 +73,11 @@ Use this tool AFTER fetching data with health tools. Transform the raw data into
       }
     }
 
+    log.done({ componentCount });
     return {
       title,
       spec,
-      componentCount: Object.keys(spec.elements).length,
+      componentCount,
     };
   },
 });

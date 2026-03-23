@@ -1,5 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 async function geocodeCity(
   city: string
@@ -42,12 +43,14 @@ export const getWeather = tool({
   }),
   needsApproval: true,
   execute: async (input) => {
+    const log = logger.tool("getWeather", { city: input.city, latitude: input.latitude, longitude: input.longitude });
     let latitude: number;
     let longitude: number;
 
     if (input.city) {
       const coords = await geocodeCity(input.city);
       if (!coords) {
+        log.done({ error: "geocode_failed" });
         return {
           error: `Could not find coordinates for "${input.city}". Please check the city name.`,
         };
@@ -58,22 +61,29 @@ export const getWeather = tool({
       latitude = input.latitude;
       longitude = input.longitude;
     } else {
+      log.done({ error: "missing_location" });
       return {
         error:
           "Please provide either a city name or both latitude and longitude coordinates.",
       };
     }
 
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`
-    );
+    try {
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`
+      );
 
-    const weatherData = await response.json();
+      const weatherData = await response.json();
 
-    if ("city" in input) {
-      weatherData.cityName = input.city;
+      if ("city" in input) {
+        weatherData.cityName = input.city;
+      }
+
+      log.done({ latitude, longitude });
+      return weatherData;
+    } catch (error) {
+      log.error(error);
+      return { error: `Failed to fetch weather: ${error}` };
     }
-
-    return weatherData;
   },
 });

@@ -2,6 +2,7 @@ import { tool } from "ai";
 import fs from "fs/promises";
 import path from "path";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -15,6 +16,7 @@ export const getRawData = tool({
       .optional(),
   }),
   execute: async (input) => {
+    const log = logger.tool("getRawData", { date: input.date });
     try {
       const rawDir = path.join(DATA_DIR, "raw");
       const files = await fs.readdir(rawDir);
@@ -24,6 +26,7 @@ export const getRawData = tool({
         .reverse();
 
       if (jsonFiles.length === 0) {
+        log.done({ empty: true });
         return { error: "No raw data available." };
       }
 
@@ -33,6 +36,7 @@ export const getRawData = tool({
         if (match) {
           targetFile = match;
         } else {
+          log.done({ notFound: true, date: input.date });
           return {
             error: `No raw data for date ${input.date}. Available: ${jsonFiles.map((f) => f.replace("-raw.json", "")).join(", ")}`,
           };
@@ -41,13 +45,16 @@ export const getRawData = tool({
 
       const raw = await fs.readFile(path.join(rawDir, targetFile), "utf-8");
       const data = JSON.parse(raw);
+      const sizeBytes = Buffer.byteLength(raw, "utf-8");
 
+      log.done({ date: targetFile.replace("-raw.json", ""), sizeBytes });
       return {
         date: targetFile.replace("-raw.json", ""),
         data,
-        sizeBytes: Buffer.byteLength(raw, "utf-8"),
+        sizeBytes,
       };
     } catch (error) {
+      log.error(error);
       return { error: `Failed to read raw data: ${error}` };
     }
   },

@@ -102,7 +102,10 @@ context accepts --activities N and --focus section1,section2.`,
       .default([]),
   }),
   execute: async ({ command, args }) => {
+    const log = logger.tool("garminQuery", { command, args });
+
     if (!isGarminCliAvailable()) {
+      log.done({ unavailable: true });
       return getUnavailableMessage(command);
     }
 
@@ -120,6 +123,7 @@ context accepts --activities N and --focus section1,section2.`,
       });
 
       if (stderr && stderr.includes("auth")) {
+        log.error(new Error("Garmin auth error"));
         return {
           error:
             "Authentication error. The Garmin CLI needs to be re-authenticated. Run: garmin-connect auth login",
@@ -129,6 +133,7 @@ context accepts --activities N and --focus section1,section2.`,
 
       try {
         const data = JSON.parse(stdout);
+        log.done({ command, outputSize: stdout.length });
         return {
           command: `garmin-connect ${fullArgs.join(" ")}`,
           description: COMMAND_DESCRIPTIONS[command] || `Result of: ${command}`,
@@ -136,12 +141,14 @@ context accepts --activities N and --focus section1,section2.`,
         };
       } catch {
         // Not JSON — return as raw text
+        log.done({ command, rawOutput: true });
         return {
           command: `garmin-connect ${fullArgs.join(" ")}`,
           rawOutput: stdout.trim(),
         };
       }
     } catch (error: unknown) {
+      log.error(error);
       const err = error as { code?: string; stderr?: string; message?: string };
 
       if (err.code === "ENOENT") {

@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import matter from "gray-matter";
 import path from "path";
 import { z } from "zod";
+import { logger } from "@/lib/observability/logger";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -18,6 +19,7 @@ export const getSleepAnalysis = tool({
       .default("latest"),
   }),
   execute: async (input) => {
+    const log = logger.tool("getSleepAnalysis", { period: input.period });
     try {
       const sleepDir = path.join(DATA_DIR, "sleep");
       const files = await fs.readdir(sleepDir);
@@ -27,12 +29,14 @@ export const getSleepAnalysis = tool({
         .reverse();
 
       if (mdFiles.length === 0) {
+        log.done({ empty: true });
         return { error: "No sleep analysis data available." };
       }
 
       const raw = await fs.readFile(path.join(sleepDir, mdFiles[0]), "utf-8");
       const { data: frontmatter, content } = matter(raw);
 
+      log.done({ periodCovered: frontmatter.periodCovered });
       return {
         periodCovered: frontmatter.periodCovered,
         dataPoints: frontmatter.dataPoints,
@@ -40,6 +44,7 @@ export const getSleepAnalysis = tool({
         analysis: content.trim(),
       };
     } catch (error) {
+      log.error(error);
       return { error: `Failed to read sleep analysis: ${error}` };
     }
   },

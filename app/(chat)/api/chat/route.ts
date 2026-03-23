@@ -301,7 +301,11 @@ export async function POST(request: Request) {
           });
         }
       },
-      onError: () => {
+      onError: (error) => {
+        logger.error("chat:stream-error", error, {
+          chatId: requestBody.id,
+          model: requestBody.selectedChatModel,
+        });
         return "Oops, an error occurred!";
       },
     });
