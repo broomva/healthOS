@@ -1,30 +1,33 @@
 FROM node:22-alpine AS base
 
-RUN apk add --no-cache libc6-compat
-RUN corepack enable && corepack prepare bun@1.2.4
+RUN apk add --no-cache libc6-compat bash curl unzip
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:$PATH"
 
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies with Bun (fast)
 FROM base AS deps
+WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-# Build the application
+# Build with Node.js (Bun segfaults on Next.js 16 build)
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Skip migrations at build time (no DB available)
-# Build with Node.js runtime (Bun has compatibility issues with Next.js build)
-RUN npm run build || npx next build
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npx next build
 
 # Production image
-FROM base AS runner
+FROM node:22-alpine AS runner
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
