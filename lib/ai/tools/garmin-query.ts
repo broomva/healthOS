@@ -1,5 +1,6 @@
 import { tool } from "ai";
 import { execFile } from "child_process";
+import { accessSync, constants } from "fs";
 import os from "os";
 import path from "path";
 import { promisify } from "util";
@@ -7,6 +8,35 @@ import { z } from "zod";
 
 const exec = promisify(execFile);
 const GARMIN_CLI = path.join(os.homedir(), ".local/bin/garmin-connect");
+
+function isGarminCliAvailable(): boolean {
+  try {
+    accessSync(GARMIN_CLI, constants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function getUnavailableMessage(command: string): {
+  unavailable: true;
+  command: string;
+  message: string;
+  description: string;
+} {
+  return {
+    unavailable: true,
+    command: `garmin-connect ${command}`,
+    message:
+      "Garmin Connect CLI is not available in this environment. " +
+      "Live Garmin data requires the garmin-connect CLI installed locally at ~/.local/bin/garmin-connect. " +
+      "This is expected in cloud deployments (e.g. Railway). " +
+      "To enable Garmin integration, run the app locally with the CLI installed.",
+    description:
+      COMMAND_DESCRIPTIONS[command] ||
+      `Would return: ${command} data from Garmin`,
+  };
+}
 
 const COMMAND_DESCRIPTIONS: Record<string, string> = {
   context:
@@ -71,6 +101,10 @@ context accepts --activities N and --focus section1,section2.`,
       .default([]),
   }),
   execute: async ({ command, args }) => {
+    if (!isGarminCliAvailable()) {
+      return getUnavailableMessage(command);
+    }
+
     try {
       const cmdParts = command.split(/\s+/);
       const fullArgs = [...cmdParts, ...args];
