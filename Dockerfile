@@ -1,7 +1,7 @@
-FROM oven/bun:1.2.4-alpine AS base
+FROM node:22-alpine AS base
 
-# Install dependencies needed for node-gyp and sharp
 RUN apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare bun@1.2.4
 
 WORKDIR /app
 
@@ -16,9 +16,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Run database migrations and build
-RUN bun lib/db/migrate.ts || echo "Migration skipped (no DB at build time)"
-RUN bun run --bun next build
+# Skip migrations at build time (no DB available)
+# Build with Node.js runtime (Bun has compatibility issues with Next.js build)
+RUN npm run build || npx next build
 
 # Production image
 FROM base AS runner
@@ -29,7 +29,6 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy standalone output
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
@@ -40,4 +39,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "server.js"]
+CMD ["node", "server.js"]
