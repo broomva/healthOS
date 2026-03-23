@@ -40,23 +40,26 @@ export const updateDocument = ({ session, dataStream }: UpdateDocumentProps) =>
       );
 
       if (!documentHandler) {
+        dataStream.write({ type: "data-finish", data: null, transient: true });
         throw new Error(`No document handler found for kind: ${document.kind}`);
       }
 
-      await documentHandler.onUpdateDocument({
-        document,
-        description,
-        dataStream,
-        session,
-      });
+      try {
+        await documentHandler.onUpdateDocument({
+          document,
+          description,
+          dataStream,
+          session,
+        });
 
-      dataStream.write({ type: "data-finish", data: null, transient: true });
-
-      return {
-        id,
-        title: document.title,
-        kind: document.kind,
-        content: "The document has been updated successfully.",
-      };
+        return {
+          id,
+          title: document.title,
+          kind: document.kind,
+          content: "The document has been updated successfully.",
+        };
+      } finally {
+        dataStream.write({ type: "data-finish", data: null, transient: true });
+      }
     },
   });
