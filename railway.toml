@@ -1,9 +1,9 @@
 [build]
-builder = "nixpacks"
-buildCommand = "bun install && bun lib/db/migrate.ts && bun run build"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "bun run start"
+startCommand = "bun lib/db/migrate.ts && bun server.js"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
