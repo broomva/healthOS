@@ -2,7 +2,7 @@
 title: "Update .env.example with all required environment variables"
 identifier: "HOS-7"
 id: "HOS-7"
-state: backlog
+state: todo
 priority: 2
 project: "healthOS"
 ---

@@ -22,13 +22,14 @@ related:
 > tool usage, files modified, and commits — linking agent work to the
 > knowledge graph.
 
-**Total sessions indexed**: 4
+**Total sessions indexed**: 5
 
 ## 2026-03-23
 
 | Session | Branch | Turns | Duration | Topic |
 |---------|--------|-------|----------|-------|
-| [[session-2026-03-23-29366c28]] | `main` | 3 | 1h 49m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-23-29366c28]] | `main` | 50 | 3h 20m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-23-c201fb5b]] | `main` | 4 | 6m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-17
 
@@ -40,7 +41,7 @@ related:
 
 ## Statistics
 
-- **Total turns**: 57
+- **Total turns**: 108
 - **Branches worked on**: 1
 - **Date range**: 2026-03-17 → 2026-03-23
 

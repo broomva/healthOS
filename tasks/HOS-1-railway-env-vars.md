@@ -2,7 +2,7 @@
 title: "Configure Railway environment variables for AI providers"
 identifier: "HOS-1"
 id: "HOS-1"
-state: backlog
+state: todo
 priority: 1
 project: "healthOS"
 ---

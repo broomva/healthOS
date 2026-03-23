@@ -2,7 +2,7 @@
 title: "Remove dead migration helper code"
 identifier: "HOS-8"
 id: "HOS-8"
-state: backlog
+state: todo
 priority: 4
 project: "healthOS"
 ---

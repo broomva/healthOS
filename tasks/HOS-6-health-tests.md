@@ -2,7 +2,7 @@
 title: "Add integration tests for health tools"
 identifier: "HOS-6"
 id: "HOS-6"
-state: backlog
+state: todo
 priority: 3
 project: "healthOS"
 ---

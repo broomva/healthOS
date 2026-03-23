@@ -2,7 +2,7 @@
 title: "Add centralized environment variable validation with Zod"
 identifier: "HOS-4"
 id: "HOS-4"
-state: backlog
+state: todo
 priority: 2
 project: "healthOS"
 ---

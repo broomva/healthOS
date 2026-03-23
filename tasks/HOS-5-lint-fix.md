@@ -2,7 +2,7 @@
 title: "Fix lint tooling mismatch between Makefile and package.json"
 identifier: "HOS-5"
 id: "HOS-5"
-state: backlog
+state: todo
 priority: 3
 project: "healthOS"
 ---

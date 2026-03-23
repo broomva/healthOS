@@ -2,7 +2,7 @@
 title: "Wire image artifact generation tool"
 identifier: "HOS-9"
 id: "HOS-9"
-state: backlog
+state: todo
 priority: 3
 project: "healthOS"
 ---

@@ -5,13 +5,9 @@
 tracker:
   kind: markdown
   project_slug: ./tasks/
-  candidate_states:
-    - backlog
-    - todo
-  active_states:
-    - in_progress
+  active_states: [todo, in_progress]
+  terminal_states: [done, canceled]
   done_state: done
-  canceled_state: canceled
 
 codex:
   command: claude --dangerously-skip-permissions

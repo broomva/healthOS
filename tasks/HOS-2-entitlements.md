@@ -2,7 +2,7 @@
 title: "Complete premium tier entitlements definition"
 identifier: "HOS-2"
 id: "HOS-2"
-state: backlog
+state: todo
 priority: 2
 project: "healthOS"
 ---
