@@ -1,10 +1,12 @@
 ---
+
 title: "Complete premium tier entitlements definition"
 identifier: "HOS-2"
 id: "HOS-2"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
+updated_at: "2026-03-23T21:48:49.487684+00:00"
 ---
 
 # HOS-2: Complete premium tier entitlements definition
