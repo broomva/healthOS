@@ -1,10 +1,12 @@
 ---
+
 title: "Add graceful fallback when Garmin CLI is unavailable"
 identifier: "HOS-3"
 id: "HOS-3"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
+updated_at: "2026-03-23T21:49:32.003936+00:00"
 ---
 
 # HOS-3: Add graceful fallback when Garmin CLI is unavailable
