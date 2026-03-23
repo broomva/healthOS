@@ -312,6 +312,8 @@ export async function POST(request: Request) {
 
     const streamContext = getStreamContext();
 
+    const logMeta = { chatId: requestBody.id, model: requestBody.selectedChatModel };
+
     if (streamContext) {
       const [streamForResumable, streamForFallback] = stream.tee();
       const sseStreamForResumable = streamForResumable.pipeThrough(
@@ -324,18 +326,20 @@ export async function POST(request: Request) {
           () => sseStreamForResumable
         );
         if (resumableStream) {
+          reqLog.done(200, { ...logMeta, resumable: true });
           return new Response(resumableStream, {
             headers: UI_MESSAGE_STREAM_HEADERS,
           });
         }
       } catch (error) {
-        console.error("Failed to create resumable stream:", error);
+        logger.error("chat:resumable-stream-failed", error, logMeta);
       }
 
+      reqLog.done(200, { ...logMeta, resumable: false });
       return createUIMessageStreamResponse({ stream: streamForFallback });
     }
 
-    reqLog.done(200, { chatId: requestBody.id, model: requestBody.selectedChatModel });
+    reqLog.done(200, logMeta);
     return createUIMessageStreamResponse({ stream });
   } catch (error) {
     if (error instanceof ChatSDKError) {

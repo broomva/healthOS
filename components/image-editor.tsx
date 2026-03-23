@@ -1,6 +1,13 @@
 import cn from "classnames";
 import { LoaderIcon } from "./icons";
 
+export function getImageSrc(content: string): string {
+  if (content.startsWith("http://") || content.startsWith("https://")) {
+    return content;
+  }
+  return `data:image/png;base64,${content}`;
+}
+
 type ImageEditorProps = {
   title: string;
   content: string;
@@ -40,7 +47,7 @@ export function ImageEditor({
             className={cn("h-fit w-full max-w-[800px]", {
               "p-0 md:p-20": !isInline,
             })}
-            src={`data:image/png;base64,${content}`}
+            src={getImageSrc(content)}
           />
         </picture>
       )}

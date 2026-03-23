@@ -1,10 +1,12 @@
 ---
+
 title: "Add integration tests for health tools"
 identifier: "HOS-6"
 id: "HOS-6"
-state: todo
+state: done
 priority: 3
 project: "healthOS"
+updated_at: "2026-03-23T21:53:16.516341+00:00"
 ---
 
 # HOS-6: Add integration tests for health tools

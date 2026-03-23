@@ -88,3 +88,7 @@ export function getArtifactModel() {
   }
   return resolveModel("anthropic:claude-haiku-4-5-20251001");
 }
+
+export function getImageModel() {
+  return openai.image("gpt-image-1");
+}
