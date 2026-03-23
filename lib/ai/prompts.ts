@@ -16,6 +16,12 @@ This is a guide for using artifacts tools: \`createDocument\` and \`updateDocume
 - When explicitly requested to create a document
 - For when content contains a single code snippet
 
+**When to use \`createDocument\` with kind "image":**
+- When the user asks to generate, create, or draw an image
+- For visualizations, diagrams, or illustrations
+- When explicitly asked for image generation
+- Use a descriptive title that serves as the image generation prompt
+
 **When NOT to use \`createDocument\`:**
 - For informational/explanatory content
 - For conversational responses
