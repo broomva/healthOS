@@ -1,12 +1,13 @@
 ---
 
+
 title: "Fix JSX syntax error in lib/json-render/registry.tsx"
 identifier: "HOS-11"
 id: "HOS-11"
-state: todo
+state: done
 priority: 1
 project: "healthOS"
-updated_at: "2026-03-24T00:00:00.000000+00:00"
+updated_at: "2026-03-24T00:32:09.264648+00:00"
 ---
 
 # HOS-11: Fix JSX syntax error in lib/json-render/registry.tsx

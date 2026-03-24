@@ -8,7 +8,6 @@ import { getVitals } from "../lib/ai/tools/get-vitals";
 import { renderHealthUI } from "../lib/ai/tools/render-health-ui";
 
 // AI SDK tool.execute takes (args, options) — provide minimal options
-// biome-ignore lint/suspicious/noExplicitAny: test helper for AI SDK tool types
 const exec = (tool: any, args: Record<string, unknown>) =>
 	tool.execute(args, { toolCallId: "test", messages: [] });
 
