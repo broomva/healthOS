@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 // json-render 0.6.1 requires zod v4 for full type inference.
 // AI SDK pins zod v3, so we disable type checking here.
 // Runtime works correctly — only TypeScript types are affected.
