@@ -1,12 +1,13 @@
 ---
 
+
 title: "Fix password field length in DB schema - increase from 64 to 255 chars"
 identifier: "HOS-15"
 id: "HOS-15"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
-updated_at: "2026-03-24T00:00:00.000000+00:00"
+updated_at: "2026-03-24T00:35:47.109824+00:00"
 ---
 
 # HOS-15: Fix password field length in DB schema
