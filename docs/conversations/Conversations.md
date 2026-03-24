@@ -29,7 +29,7 @@ related:
 | Session | Branch | Turns | Duration | Topic |
 |---------|--------|-------|----------|-------|
 | [[session-2026-03-24-a18a8984]] | `main` | 4 | 4m | <channel source="plugin:discord:discord" chat_id=" |
-| [[session-2026-03-24-4fded046]] | `main` | 5 | 6m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-24-4fded046]] | `main` | 6 | 9m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-23
 
@@ -51,7 +51,7 @@ related:
 
 ## Statistics
 
-- **Total turns**: 127
+- **Total turns**: 128
 - **Branches worked on**: 1
 - **Date range**: 2026-03-17 → 2026-03-24
 

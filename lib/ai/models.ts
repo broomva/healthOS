@@ -16,8 +16,8 @@ export const chatModels: ChatModel[] = [
 		description: "Fast and affordable, great for everyday tasks",
 	},
 	{
-		id: "anthropic:claude-sonnet-4-5-20250929",
-		name: "Claude Sonnet 4.5",
+		id: "anthropic:claude-sonnet-4-6",
+		name: "Claude Sonnet 4.6",
 		provider: "anthropic",
 		description: "Best balance of speed, intelligence, and cost",
 	},
@@ -29,8 +29,8 @@ export const chatModels: ChatModel[] = [
 	},
 	// OpenAI
 	{
-		id: "openai:gpt-5.2",
-		name: "GPT-5.2 Chat",
+		id: "openai:gpt-5.4",
+		name: "GPT-5.4 Chat",
 		provider: "openai",
 		description: "Flagship model for advanced reasoning and logic",
 	},
