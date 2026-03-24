@@ -72,11 +72,11 @@ export function getStreamContext() {
 			});
 		} catch (error: any) {
 			if (error.message.includes("REDIS_URL")) {
-				console.log(
-					" > Resumable streams are disabled due to missing REDIS_URL",
-				);
+				logger.warn("resumable-streams:disabled", {
+					reason: "missing REDIS_URL",
+				});
 			} else {
-				console.error(error);
+				logger.error("resumable-streams:init-failed", error);
 			}
 		}
 	}
