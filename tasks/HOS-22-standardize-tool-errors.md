@@ -1,12 +1,13 @@
 ---
 
+
 title: "Standardize error handling across AI tool implementations"
 identifier: "HOS-22"
 id: "HOS-22"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
-updated_at: "2026-03-24T00:00:00.000000+00:00"
+updated_at: "2026-03-24T13:17:17.865915+00:00"
 ---
 
 # HOS-22: Standardize error handling across AI tools

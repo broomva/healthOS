@@ -3,7 +3,7 @@
 title: "Fix TypeScript errors in lib/json-render/registry.tsx after @ts-nocheck removal"
 identifier: "HOS-21"
 id: "HOS-21"
-state: todo
+state: done
 priority: 1
 project: "healthOS"
 updated_at: "2026-03-24T00:00:00.000000+00:00"
