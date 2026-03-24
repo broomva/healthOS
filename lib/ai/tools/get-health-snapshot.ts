@@ -30,7 +30,11 @@ export const getHealthSnapshot = tool({
 
 			if (mdFiles.length === 0) {
 				log.done({ empty: true });
-				return { error: "No weekly health data available." };
+				return {
+					success: false,
+					error: "No weekly health data available.",
+					data: null,
+				};
 			}
 
 			let targetFile = mdFiles[0];
@@ -47,16 +51,24 @@ export const getHealthSnapshot = tool({
 				alertCount: (frontmatter.alerts || []).length,
 			});
 			return {
-				week: frontmatter.week,
-				dateRange: frontmatter.dateRange,
-				metrics: frontmatter.metrics,
-				alerts: frontmatter.alerts || [],
-				tags: frontmatter.tags || [],
-				analysis: content.trim(),
+				success: true,
+				error: null,
+				data: {
+					week: frontmatter.week,
+					dateRange: frontmatter.dateRange,
+					metrics: frontmatter.metrics,
+					alerts: frontmatter.alerts || [],
+					tags: frontmatter.tags || [],
+					analysis: content.trim(),
+				},
 			};
 		} catch (error) {
 			log.error(error);
-			return { error: `Failed to read health snapshot: ${error}` };
+			return {
+				success: false,
+				error: `Failed to read health snapshot: ${error}`,
+				data: null,
+			};
 		}
 	},
 });

@@ -35,7 +35,11 @@ export const getVitals = tool({
 
 			if (mdFiles.length === 0) {
 				log.done({ empty: true });
-				return { error: "No daily vitals data available." };
+				return {
+					success: false,
+					error: "No daily vitals data available.",
+					data: null,
+				};
 			}
 
 			const days = Math.min(input.days || 1, 14);
@@ -66,12 +70,20 @@ export const getVitals = tool({
 
 			log.done({ count: results.length });
 			return {
-				days: results,
-				count: results.length,
+				success: true,
+				error: null,
+				data: {
+					days: results,
+					count: results.length,
+				},
 			};
 		} catch (error) {
 			log.error(error);
-			return { error: `Failed to read vitals: ${error}` };
+			return {
+				success: false,
+				error: `Failed to read vitals: ${error}`,
+				data: null,
+			};
 		}
 	},
 });

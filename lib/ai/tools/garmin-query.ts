@@ -106,7 +106,8 @@ context accepts --activities N and --focus section1,section2.`,
 
 		if (!isGarminCliAvailable()) {
 			log.done({ unavailable: true });
-			return getUnavailableMessage(command);
+			const unavailable = getUnavailableMessage(command);
+			return { success: false, error: unavailable.message, data: null };
 		}
 
 		try {

@@ -3,7 +3,7 @@
 title: "Standardize error handling across AI tool implementations"
 identifier: "HOS-20"
 id: "HOS-20"
-state: todo
+state: canceled
 priority: 3
 project: "healthOS"
 updated_at: "2026-03-24T00:00:00.000000+00:00"

@@ -56,7 +56,9 @@ export const getWeather = tool({
 			if (!coords) {
 				log.done({ error: "geocode_failed" });
 				return {
+					success: false,
 					error: `Could not find coordinates for "${input.city}". Please check the city name.`,
+					data: null,
 				};
 			}
 			latitude = coords.latitude;
@@ -67,8 +69,10 @@ export const getWeather = tool({
 		} else {
 			log.done({ error: "missing_location" });
 			return {
+				success: false,
 				error:
 					"Please provide either a city name or both latitude and longitude coordinates.",
+				data: null,
 			};
 		}
 
@@ -84,10 +88,10 @@ export const getWeather = tool({
 			}
 
 			log.done({ latitude, longitude });
-			return weatherData;
+			return { success: true, error: null, data: weatherData };
 		} catch (error) {
 			log.error(error);
-			return { error: `Failed to fetch weather: ${error}` };
+			return { success: false, error: `Failed to fetch weather: ${error}`, data: null };
 		}
 	},
 });

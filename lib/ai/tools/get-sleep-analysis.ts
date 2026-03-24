@@ -30,7 +30,11 @@ export const getSleepAnalysis = tool({
 
 			if (mdFiles.length === 0) {
 				log.done({ empty: true });
-				return { error: "No sleep analysis data available." };
+				return {
+					success: false,
+					error: "No sleep analysis data available.",
+					data: null,
+				};
 			}
 
 			const raw = await fs.readFile(path.join(sleepDir, mdFiles[0]), "utf-8");
@@ -38,14 +42,22 @@ export const getSleepAnalysis = tool({
 
 			log.done({ periodCovered: frontmatter.periodCovered });
 			return {
-				periodCovered: frontmatter.periodCovered,
-				dataPoints: frontmatter.dataPoints,
-				summary: frontmatter.summary,
-				analysis: content.trim(),
+				success: true,
+				error: null,
+				data: {
+					periodCovered: frontmatter.periodCovered,
+					dataPoints: frontmatter.dataPoints,
+					summary: frontmatter.summary,
+					analysis: content.trim(),
+				},
 			};
 		} catch (error) {
 			log.error(error);
-			return { error: `Failed to read sleep analysis: ${error}` };
+			return {
+				success: false,
+				error: `Failed to read sleep analysis: ${error}`,
+				data: null,
+			};
 		}
 	},
 });

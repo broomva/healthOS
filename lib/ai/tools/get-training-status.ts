@@ -30,7 +30,11 @@ export const getTrainingStatus = tool({
 
 			if (mdFiles.length === 0) {
 				log.done({ empty: true });
-				return { error: "No training data available." };
+				return {
+					success: false,
+					error: "No training data available.",
+					data: null,
+				};
 			}
 
 			let targetFile = mdFiles[0];
@@ -47,13 +51,21 @@ export const getTrainingStatus = tool({
 
 			log.done({ date: frontmatter.date });
 			return {
-				date: frontmatter.date,
-				metrics: frontmatter.metrics,
-				analysis: content.trim(),
+				success: true,
+				error: null,
+				data: {
+					date: frontmatter.date,
+					metrics: frontmatter.metrics,
+					analysis: content.trim(),
+				},
 			};
 		} catch (error) {
 			log.error(error);
-			return { error: `Failed to read training status: ${error}` };
+			return {
+				success: false,
+				error: `Failed to read training status: ${error}`,
+				data: null,
+			};
 		}
 	},
 });
