@@ -91,7 +91,11 @@ export const getWeather = tool({
 			return { success: true, error: null, data: weatherData };
 		} catch (error) {
 			log.error(error);
-			return { success: false, error: `Failed to fetch weather: ${error}`, data: null };
+			return {
+				success: false,
+				error: `Failed to fetch weather: ${error instanceof Error ? error.message : String(error)}`,
+				data: null,
+			};
 		}
 	},
 });
