@@ -1,12 +1,13 @@
 ---
 
+
 title: "Audit chat route for AI SDK v6 compatibility - messages and streaming"
 identifier: "HOS-17"
 id: "HOS-17"
-state: todo
+state: done
 priority: 1
 project: "healthOS"
-updated_at: "2026-03-24T00:00:00.000000+00:00"
+updated_at: "2026-03-24T00:35:59.722236+00:00"
 ---
 
 # HOS-17: Audit chat route for AI SDK v6 compatibility
