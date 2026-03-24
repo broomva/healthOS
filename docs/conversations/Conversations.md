@@ -22,14 +22,24 @@ related:
 > tool usage, files modified, and commits — linking agent work to the
 > knowledge graph.
 
-**Total sessions indexed**: 5
+**Total sessions indexed**: 10
+
+## 2026-03-24
+
+| Session | Branch | Turns | Duration | Topic |
+|---------|--------|-------|----------|-------|
+| [[session-2026-03-24-a18a8984]] | `main` | 4 | 4m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-24-4fded046]] | `main` | 5 | 6m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-23
 
 | Session | Branch | Turns | Duration | Topic |
 |---------|--------|-------|----------|-------|
 | [[session-2026-03-23-29366c28]] | `main` | 50 | 3h 20m | <channel source="plugin:discord:discord" chat_id=" |
-| [[session-2026-03-23-c201fb5b]] | `main` | 4 | 6m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-23-c201fb5b]] | `main` | 7 | 53m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-23-c8b3c463]] | `main` | 2 | 0m | <command-name>/login</command-name>             <c |
+| [[session-2026-03-23-1fad3018]] | `main` | 3 | 5m | env  grep -i ANTHROPIC |
+| [[session-2026-03-23-9659c2e8]] | `main` | 2 | 9m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-17
 
@@ -41,9 +51,9 @@ related:
 
 ## Statistics
 
-- **Total turns**: 108
+- **Total turns**: 127
 - **Branches worked on**: 1
-- **Date range**: 2026-03-17 → 2026-03-23
+- **Date range**: 2026-03-17 → 2026-03-24
 
 ---
 

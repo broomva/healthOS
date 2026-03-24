@@ -26,7 +26,7 @@ hooks:
   after_run: |
     cd /Users/broomva/broomva/apps/healthOS
     git add -A
-    git commit -m "{{ issue.identifier }}: {{ issue.title }}" --allow-empty || true
+    git diff --cached --quiet || git commit -m "chore: symphony agent run complete" || true
 
 retry:
   max_retries: 1

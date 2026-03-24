@@ -1,10 +1,12 @@
 ---
+
 title: "Set up Sentry error monitoring and OpenTelemetry tracing"
 identifier: "HOS-10"
 id: "HOS-10"
-state: todo
+state: done
 priority: 3
 project: "healthOS"
+updated_at: "2026-03-23T21:58:08.262038+00:00"
 ---
 
 # HOS-10: Set up Sentry error monitoring and OpenTelemetry tracing

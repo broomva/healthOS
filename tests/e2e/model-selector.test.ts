@@ -4,89 +4,89 @@ const MODEL_BUTTON_REGEX = /Claude|GPT|Llama|Mistral|Qwen|DeepSeek/i;
 const CLAUDE_SONNET_REGEX = /Claude Sonnet 4\.5/;
 
 test.describe("Model Selector", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
+	test.beforeEach(async ({ page }) => {
+		await page.goto("/");
+	});
 
-  test("displays a model button", async ({ page }) => {
-    // Look for any button with model-related content
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await expect(modelButton).toBeVisible();
-  });
+	test("displays a model button", async ({ page }) => {
+		// Look for any button with model-related content
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await expect(modelButton).toBeVisible();
+	});
 
-  test("opens model selector popover on click", async ({ page }) => {
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await modelButton.click();
+	test("opens model selector popover on click", async ({ page }) => {
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await modelButton.click();
 
-    // Search input should be visible in the popover
-    await expect(page.getByPlaceholder("Search models...")).toBeVisible();
-  });
+		// Search input should be visible in the popover
+		await expect(page.getByPlaceholder("Search models...")).toBeVisible();
+	});
 
-  test("can search for models", async ({ page }) => {
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await modelButton.click();
+	test("can search for models", async ({ page }) => {
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await modelButton.click();
 
-    const searchInput = page.getByPlaceholder("Search models...");
-    await searchInput.fill("Claude");
+		const searchInput = page.getByPlaceholder("Search models...");
+		await searchInput.fill("Claude");
 
-    // Should show at least one Claude model
-    await expect(page.getByText("Claude Haiku 4.5").first()).toBeVisible();
-  });
+		// Should show at least one Claude model
+		await expect(page.getByText("Claude Haiku 4.5").first()).toBeVisible();
+	});
 
-  test("can close model selector by clicking outside", async ({ page }) => {
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await modelButton.click();
+	test("can close model selector by clicking outside", async ({ page }) => {
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await modelButton.click();
 
-    await expect(page.getByPlaceholder("Search models...")).toBeVisible();
+		await expect(page.getByPlaceholder("Search models...")).toBeVisible();
 
-    // Click outside to close
-    await page.keyboard.press("Escape");
+		// Click outside to close
+		await page.keyboard.press("Escape");
 
-    await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
-  });
+		await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
+	});
 
-  test("shows model provider groups", async ({ page }) => {
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await modelButton.click();
+	test("shows model provider groups", async ({ page }) => {
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await modelButton.click();
 
-    // Should show provider group headers
-    const dialog = page.getByRole("dialog");
-    await expect(dialog.getByText("Anthropic")).toBeVisible();
-    await expect(dialog.getByText("OpenAI")).toBeVisible();
-  });
+		// Should show provider group headers
+		const dialog = page.getByRole("dialog");
+		await expect(dialog.getByText("Anthropic")).toBeVisible();
+		await expect(dialog.getByText("OpenAI")).toBeVisible();
+	});
 
-  test("can select a different model", async ({ page }) => {
-    const modelButton = page
-      .locator("button")
-      .filter({ hasText: MODEL_BUTTON_REGEX })
-      .first();
-    await modelButton.click();
+	test("can select a different model", async ({ page }) => {
+		const modelButton = page
+			.locator("button")
+			.filter({ hasText: MODEL_BUTTON_REGEX })
+			.first();
+		await modelButton.click();
 
-    // Select a specific model within the dialog
-    const dialog = page.getByRole("dialog");
-    await dialog.getByRole("option", { name: CLAUDE_SONNET_REGEX }).click();
+		// Select a specific model within the dialog
+		const dialog = page.getByRole("dialog");
+		await dialog.getByRole("option", { name: CLAUDE_SONNET_REGEX }).click();
 
-    // Popover should close
-    await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
+		// Popover should close
+		await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
 
-    // Model button should now show the selected model
-    await expect(
-      page.locator("button").filter({ hasText: CLAUDE_SONNET_REGEX }).first()
-    ).toBeVisible();
-  });
+		// Model button should now show the selected model
+		await expect(
+			page.locator("button").filter({ hasText: CLAUDE_SONNET_REGEX }).first(),
+		).toBeVisible();
+	});
 });

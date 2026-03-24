@@ -1,15 +1,15 @@
 {
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/broomva/broomva/apps/healthOS/scripts/conversation-bridge-hook.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ]
-  }
+	"hooks": {
+		"Notification": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "/Users/broomva/broomva/apps/healthOS/scripts/conversation-bridge-hook.sh",
+						"timeout": 5
+					}
+				]
+			}
+		]
+	}
 }

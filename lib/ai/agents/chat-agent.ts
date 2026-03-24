@@ -19,41 +19,41 @@ import { skillManager } from "../tools/skill-manager";
 import { updateDocument } from "../tools/update-document";
 
 type CreateChatAgentParams = {
-  selectedChatModel: string;
-  requestHints: RequestHints;
-  session: Session;
-  dataStream: UIMessageStreamWriter<ChatMessage>;
+	selectedChatModel: string;
+	requestHints: RequestHints;
+	session: Session;
+	dataStream: UIMessageStreamWriter<ChatMessage>;
 };
 
 export function createChatAgent({
-  selectedChatModel,
-  requestHints,
-  session,
-  dataStream,
+	selectedChatModel,
+	requestHints,
+	session,
+	dataStream,
 }: CreateChatAgentParams) {
-  return new ToolLoopAgent({
-    id: "chat-agent",
-    model: getLanguageModel(selectedChatModel),
-    instructions: systemPrompt({ selectedChatModel, requestHints }),
-    stopWhen: stepCountIs(10),
-    tools: {
-      getWeather,
-      getHealthSnapshot,
-      getSleepAnalysis,
-      getTrainingStatus,
-      getVitals,
-      getRawData,
-      garminQuery,
-      shellExecute,
-      skillManager,
-      renderHealthUI,
-      createDocument: createDocument({ session, dataStream }),
-      updateDocument: updateDocument({ session, dataStream }),
-      requestSuggestions: requestSuggestions({ session, dataStream }),
-    },
-    experimental_telemetry: {
-      isEnabled: isProductionEnvironment,
-      functionId: "chat-agent",
-    },
-  });
+	return new ToolLoopAgent({
+		id: "chat-agent",
+		model: getLanguageModel(selectedChatModel),
+		instructions: systemPrompt({ selectedChatModel, requestHints }),
+		stopWhen: stepCountIs(10),
+		tools: {
+			getWeather,
+			getHealthSnapshot,
+			getSleepAnalysis,
+			getTrainingStatus,
+			getVitals,
+			getRawData,
+			garminQuery,
+			shellExecute,
+			skillManager,
+			renderHealthUI,
+			createDocument: createDocument({ session, dataStream }),
+			updateDocument: updateDocument({ session, dataStream }),
+			requestSuggestions: requestSuggestions({ session, dataStream }),
+		},
+		experimental_telemetry: {
+			isEnabled: isProductionEnvironment,
+			functionId: "chat-agent",
+		},
+	});
 }

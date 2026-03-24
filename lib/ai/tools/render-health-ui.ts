@@ -3,20 +3,20 @@ import { z } from "zod";
 import { logger } from "@/lib/observability/logger";
 
 const uiElementSchema = z.object({
-  type: z.string().describe("Component name from the catalog"),
-  props: z.record(z.unknown()).describe("Props for the component"),
-  children: z.array(z.string()).optional().describe("Keys of child elements"),
+	type: z.string().describe("Component name from the catalog"),
+	props: z.record(z.unknown()).describe("Props for the component"),
+	children: z.array(z.string()).optional().describe("Keys of child elements"),
 });
 
 const specSchema = z.object({
-  root: z.string().describe("Key of the root element in the elements map"),
-  elements: z
-    .record(uiElementSchema)
-    .describe("Flat map of element key → element definition"),
+	root: z.string().describe("Key of the root element in the elements map"),
+	elements: z
+		.record(uiElementSchema)
+		.describe("Flat map of element key → element definition"),
 });
 
 export const renderHealthUI = tool({
-  description: `Render a rich, interactive health UI using structured JSON specs. Use this to present health data visually with cards, grids, tables, progress bars, and badges — instead of plain text or raw JSON.
+	description: `Render a rich, interactive health UI using structured JSON specs. Use this to present health data visually with cards, grids, tables, progress bars, and badges — instead of plain text or raw JSON.
 
 Available components:
 - **SectionCard**: Container card with title, subtitle, and theme variant (default|health|sleep|training|live). Wraps other components.
@@ -41,43 +41,43 @@ Spec format uses a flat element map:
 }
 
 Use this tool AFTER fetching data with health tools. Transform the raw data into a visual spec.`,
-  inputSchema: z.object({
-    title: z
-      .string()
-      .describe("Brief title for the UI panel (shown as a header)"),
-    spec: specSchema,
-  }),
-  execute: async ({ title, spec }) => {
-    const componentCount = Object.keys(spec.elements).length;
-    const log = logger.tool("renderHealthUI", { title, componentCount });
+	inputSchema: z.object({
+		title: z
+			.string()
+			.describe("Brief title for the UI panel (shown as a header)"),
+		spec: specSchema,
+	}),
+	execute: async ({ title, spec }) => {
+		const componentCount = Object.keys(spec.elements).length;
+		const log = logger.tool("renderHealthUI", { title, componentCount });
 
-    // Validate that root exists in elements
-    if (!spec.elements[spec.root]) {
-      log.done({ validationError: "missing_root" });
-      return {
-        error: `Root element "${spec.root}" not found in elements map`,
-      };
-    }
+		// Validate that root exists in elements
+		if (!spec.elements[spec.root]) {
+			log.done({ validationError: "missing_root" });
+			return {
+				error: `Root element "${spec.root}" not found in elements map`,
+			};
+		}
 
-    // Validate all children references exist
-    for (const [key, element] of Object.entries(spec.elements)) {
-      if (element.children) {
-        for (const childKey of element.children) {
-          if (!spec.elements[childKey]) {
-            log.done({ validationError: "missing_child", key, childKey });
-            return {
-              error: `Element "${key}" references child "${childKey}" which does not exist in elements map`,
-            };
-          }
-        }
-      }
-    }
+		// Validate all children references exist
+		for (const [key, element] of Object.entries(spec.elements)) {
+			if (element.children) {
+				for (const childKey of element.children) {
+					if (!spec.elements[childKey]) {
+						log.done({ validationError: "missing_child", key, childKey });
+						return {
+							error: `Element "${key}" references child "${childKey}" which does not exist in elements map`,
+						};
+					}
+				}
+			}
+		}
 
-    log.done({ componentCount });
-    return {
-      title,
-      spec,
-      componentCount,
-    };
-  },
+		log.done({ componentCount });
+		return {
+			title,
+			spec,
+			componentCount,
+		};
+	},
 });
