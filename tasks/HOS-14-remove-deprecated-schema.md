@@ -1,13 +1,14 @@
 ---
 
 
+
 title: "Remove deprecated DB schema tables messageDeprecated and voteDeprecated"
 identifier: "HOS-14"
 id: "HOS-14"
 state: done
 priority: 1
 project: "healthOS"
-updated_at: "2026-03-24T00:35:43.797304+00:00"
+updated_at: "2026-03-24T00:35:44.396019+00:00"
 ---
 
 # HOS-14: Remove deprecated DB schema tables
