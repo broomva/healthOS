@@ -126,26 +126,36 @@ context accepts --activities N and --focus section1,section2.`,
 			if (stderr?.includes("auth")) {
 				log.error(new Error("Garmin auth error"));
 				return {
+					success: false,
 					error:
 						"Authentication error. The Garmin CLI needs to be re-authenticated. Run: garmin-connect auth login",
-					exitCode: 2,
+					data: null,
 				};
 			}
 
 			try {
-				const data = JSON.parse(stdout);
+				const parsed = JSON.parse(stdout);
 				log.done({ command, outputSize: stdout.length });
 				return {
-					command: `garmin-connect ${fullArgs.join(" ")}`,
-					description: COMMAND_DESCRIPTIONS[command] || `Result of: ${command}`,
-					data,
+					success: true,
+					error: null,
+					data: {
+						command: `garmin-connect ${fullArgs.join(" ")}`,
+						description:
+							COMMAND_DESCRIPTIONS[command] || `Result of: ${command}`,
+						result: parsed,
+					},
 				};
 			} catch {
 				// Not JSON — return as raw text
 				log.done({ command, rawOutput: true });
 				return {
-					command: `garmin-connect ${fullArgs.join(" ")}`,
-					rawOutput: stdout.trim(),
+					success: true,
+					error: null,
+					data: {
+						command: `garmin-connect ${fullArgs.join(" ")}`,
+						rawOutput: stdout.trim(),
+					},
 				};
 			}
 		} catch (error: unknown) {
@@ -154,21 +164,25 @@ context accepts --activities N and --focus section1,section2.`,
 
 			if (err.code === "ENOENT") {
 				return {
+					success: false,
 					error:
 						"garmin-connect CLI not found. Install it: curl -fsSL https://raw.githubusercontent.com/eddmann/garmin-connect-cli/main/install.sh | sh",
+					data: null,
 				};
 			}
 
 			if (err.stderr?.includes("auth") || err.stderr?.includes("token")) {
 				return {
+					success: false,
 					error: "Authentication expired. Run: garmin-connect auth login",
-					exitCode: 2,
+					data: null,
 				};
 			}
 
 			return {
+				success: false,
 				error: `CLI error: ${err.message || String(error)}`,
-				stderr: err.stderr?.slice(0, 500),
+				data: err.stderr ? { stderr: err.stderr.slice(0, 500) } : null,
 			};
 		}
 	},

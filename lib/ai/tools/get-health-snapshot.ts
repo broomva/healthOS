@@ -66,7 +66,7 @@ export const getHealthSnapshot = tool({
 			log.error(error);
 			return {
 				success: false,
-				error: `Failed to read health snapshot: ${error}`,
+				error: `Failed to read health snapshot: ${error instanceof Error ? error.message : String(error)}`,
 				data: null,
 			};
 		}

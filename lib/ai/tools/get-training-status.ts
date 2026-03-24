@@ -63,7 +63,7 @@ export const getTrainingStatus = tool({
 			log.error(error);
 			return {
 				success: false,
-				error: `Failed to read training status: ${error}`,
+				error: `Failed to read training status: ${error instanceof Error ? error.message : String(error)}`,
 				data: null,
 			};
 		}

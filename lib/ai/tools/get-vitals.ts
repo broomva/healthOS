@@ -81,7 +81,7 @@ export const getVitals = tool({
 			log.error(error);
 			return {
 				success: false,
-				error: `Failed to read vitals: ${error}`,
+				error: `Failed to read vitals: ${error instanceof Error ? error.message : String(error)}`,
 				data: null,
 			};
 		}

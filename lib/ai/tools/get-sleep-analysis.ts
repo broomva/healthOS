@@ -55,7 +55,7 @@ export const getSleepAnalysis = tool({
 			log.error(error);
 			return {
 				success: false,
-				error: `Failed to read sleep analysis: ${error}`,
+				error: `Failed to read sleep analysis: ${error instanceof Error ? error.message : String(error)}`,
 				data: null,
 			};
 		}
