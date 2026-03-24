@@ -1,12 +1,13 @@
 ---
 
+
 title: "Fix formatter issues in icons.tsx, health-tools.test.ts, get-vitals.ts"
 identifier: "HOS-12"
 id: "HOS-12"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
-updated_at: "2026-03-24T00:00:00.000000+00:00"
+updated_at: "2026-03-24T00:32:17.063203+00:00"
 ---
 
 # HOS-12: Fix formatter issues in remaining files

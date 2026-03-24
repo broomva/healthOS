@@ -3,7 +3,7 @@
 title: "Commit all accumulated uncommitted changes with proper messages"
 identifier: "HOS-13"
 id: "HOS-13"
-state: todo
+state: done
 priority: 3
 project: "healthOS"
 updated_at: "2026-03-24T00:00:00.000000+00:00"
