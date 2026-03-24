@@ -3,7 +3,7 @@
 title: "Replace console.log in chat route with structured logger"
 identifier: "HOS-18"
 id: "HOS-18"
-state: todo
+state: done
 priority: 2
 project: "healthOS"
 updated_at: "2026-03-24T00:00:00.000000+00:00"
