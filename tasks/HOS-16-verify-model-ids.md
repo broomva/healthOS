@@ -1,13 +1,14 @@
 ---
 
 
+
 title: "Verify and clean up AI model IDs in lib/ai/models.ts"
 identifier: "HOS-16"
 id: "HOS-16"
 state: done
 priority: 2
 project: "healthOS"
-updated_at: "2026-03-24T00:35:56.926104+00:00"
+updated_at: "2026-03-24T00:35:56.976094+00:00"
 ---
 
 # HOS-16: Verify and clean up AI model IDs
