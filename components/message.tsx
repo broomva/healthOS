@@ -454,7 +454,7 @@ const PurePreviewMessage = ({
 							const { toolCallId, state } = part;
 							if (state === "output-available" && part.output) {
 								const output = part.output as Record<string, unknown>;
-								if ("error" in output) {
+								if ("error" in output && output.error) {
 									return (
 										<div
 											className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
@@ -567,7 +567,7 @@ const PurePreviewMessage = ({
 							const { toolCallId, state } = part;
 							if (state === "output-available" && part.output) {
 								const output = part.output as Record<string, unknown>;
-								if ("error" in output) {
+								if ("error" in output && output.error) {
 									return (
 										<div
 											className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"
@@ -641,7 +641,7 @@ const PurePreviewMessage = ({
 							const { toolCallId, state } = part;
 							if (state === "output-available" && part.output) {
 								const output = part.output as Record<string, unknown>;
-								if ("error" in output) {
+								if ("error" in output && output.error) {
 									return (
 										<div
 											className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:border-red-800 dark:bg-red-950/50"

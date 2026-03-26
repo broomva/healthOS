@@ -86,7 +86,7 @@ Available commands:
 - weight get — Body composition
 
 All health/training commands accept --date-str YYYY-MM-DD for historical data.
-activities list accepts --limit N, --after DATE, --before DATE, --type TYPE.
+activities list accepts --limit N, --after DATE, --before DATE, --activity-type TYPE (e.g. lap_swimming, cycling, running, pool_apnea, yoga, breathwork).
 context accepts --activities N and --focus section1,section2.`,
 	inputSchema: z.object({
 		command: z
@@ -97,7 +97,7 @@ context accepts --activities N and --focus section1,section2.`,
 		args: z
 			.array(z.string())
 			.describe(
-				"Additional CLI arguments. Use --date-str with a YYYY-MM-DD value for historical data. Use --limit with a number for activity lists. Use --activities with a number for context queries.",
+				"Additional CLI arguments. Use --date-str YYYY-MM-DD for historical data. Use --limit N for activity lists. Use --activity-type TYPE to filter activities (lap_swimming, cycling, running, pool_apnea, yoga, breathwork). Use --activities N for context queries.",
 			)
 			.default([]),
 	}),
