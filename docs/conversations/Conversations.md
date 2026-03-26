@@ -6,8 +6,8 @@ tags:
   - moc
 type: moc
 status: active
-created: 2026-03-24
-updated: 2026-03-24
+created: 2026-03-25
+updated: 2026-03-25
 related:
   - "[[Documentation Hub]]"
   - "[[CLAUDE]]"
@@ -22,7 +22,13 @@ related:
 > tool usage, files modified, and commits — linking agent work to the
 > knowledge graph.
 
-**Total sessions indexed**: 10
+**Total sessions indexed**: 13
+
+## 2026-03-26
+
+| Session | Branch | Turns | Duration | Topic |
+|---------|--------|-------|----------|-------|
+| [[session-2026-03-26-5bd94532]] | `main` | 5 | 29m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-24
 
@@ -30,6 +36,8 @@ related:
 |---------|--------|-------|----------|-------|
 | [[session-2026-03-24-a18a8984]] | `main` | 4 | 4m | <channel source="plugin:discord:discord" chat_id=" |
 | [[session-2026-03-24-4fded046]] | `main` | 10 | 16m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-24-7beb1f92]] | `main` | 8 | 26m | <channel source="plugin:discord:discord" chat_id=" |
+| [[session-2026-03-24-7caa9bed]] | `main` | 4 | 37h 25m | <channel source="plugin:discord:discord" chat_id=" |
 
 ## 2026-03-23
 
@@ -51,9 +59,9 @@ related:
 
 ## Statistics
 
-- **Total turns**: 132
+- **Total turns**: 149
 - **Branches worked on**: 1
-- **Date range**: 2026-03-17 → 2026-03-24
+- **Date range**: 2026-03-17 → 2026-03-26
 
 ---
 

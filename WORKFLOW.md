@@ -16,7 +16,7 @@ codex:
 
 workspace:
   root: /Users/broomva/broomva/apps/healthOS
-  strategy: directory
+  strategy: none
   base_branch: main
 
 concurrency: 2
