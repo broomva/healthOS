@@ -124,6 +124,7 @@ const PurePreviewMessage = ({
 						}
 
 						if (type === "text") {
+							if (!part.text || part.text.trim() === "null") return null;
 							if (mode === "view") {
 								return (
 									<div key={key}>

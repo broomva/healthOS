@@ -17,36 +17,36 @@ describe("getHealthSnapshot", () => {
 	test("returns latest weekly snapshot with all required fields", async () => {
 		const result = await exec(getHealthSnapshot, {});
 
-		expect(result).not.toHaveProperty("error");
-		expect(result).toHaveProperty("week");
-		expect(result).toHaveProperty("dateRange");
-		expect(result).toHaveProperty("metrics");
-		expect(result).toHaveProperty("alerts");
-		expect(result).toHaveProperty("tags");
-		expect(result).toHaveProperty("analysis");
-		expect(typeof result.analysis).toBe("string");
-		expect(result.analysis.length).toBeGreaterThan(0);
+		expect(result.error).toBeNull();
+		expect(result.data).toHaveProperty("week");
+		expect(result.data).toHaveProperty("dateRange");
+		expect(result.data).toHaveProperty("metrics");
+		expect(result.data).toHaveProperty("alerts");
+		expect(result.data).toHaveProperty("tags");
+		expect(result.data).toHaveProperty("analysis");
+		expect(typeof result.data.analysis).toBe("string");
+		expect(result.data.analysis.length).toBeGreaterThan(0);
 	});
 
 	test("parses specific week with correct metric values", async () => {
 		const result = await exec(getHealthSnapshot, { week: "2026-W07" });
 
-		expect(result.week).toBe("2026-W07");
-		expect(result.dateRange).toBe("Feb 7 - Feb 13, 2026");
-		expect(result.metrics.sleepScore.avg).toBe(74.8);
-		expect(result.metrics.trainingStatus.label).toBe("MAINTAINING");
-		expect(result.metrics.acwr.ratio).toBe(1.1);
-		expect(result.metrics.acwr.status).toBe("OPTIMAL");
-		expect(result.metrics.hrv.status).toBe("UNBALANCED");
+		expect(result.data.week).toBe("2026-W07");
+		expect(result.data.dateRange).toBe("Feb 7 - Feb 13, 2026");
+		expect(result.data.metrics.sleepScore.avg).toBe(74.8);
+		expect(result.data.metrics.trainingStatus.label).toBe("MAINTAINING");
+		expect(result.data.metrics.acwr.ratio).toBe(1.1);
+		expect(result.data.metrics.acwr.status).toBe("OPTIMAL");
+		expect(result.data.metrics.hrv.status).toBe("UNBALANCED");
 	});
 
 	test("parses alerts array with severity types", async () => {
 		const result = await exec(getHealthSnapshot, { week: "2026-W07" });
 
-		expect(Array.isArray(result.alerts)).toBe(true);
-		expect(result.alerts.length).toBeGreaterThan(0);
+		expect(Array.isArray(result.data.alerts)).toBe(true);
+		expect(result.data.alerts.length).toBeGreaterThan(0);
 
-		for (const alert of result.alerts) {
+		for (const alert of result.data.alerts) {
 			expect(["info", "warning", "critical"]).toContain(alert.type);
 			expect(alert).toHaveProperty("metric");
 			expect(alert).toHaveProperty("message");
@@ -57,8 +57,8 @@ describe("getHealthSnapshot", () => {
 		const result = await exec(getHealthSnapshot, { week: "9999-W01" });
 
 		// Should still return the latest available, not error
-		expect(result).not.toHaveProperty("error");
-		expect(result).toHaveProperty("week");
+		expect(result.error).toBeNull();
+		expect(result.data).toHaveProperty("week");
 	});
 });
 
@@ -68,11 +68,11 @@ describe("getVitals", () => {
 	test("returns single day with parsed sleep and physiological metrics", async () => {
 		const result = await exec(getVitals, { date: "2026-02-10", days: 1 });
 
-		expect(result).not.toHaveProperty("error");
-		expect(result.count).toBe(1);
-		expect(result.days).toHaveLength(1);
+		expect(result.error).toBeNull();
+		expect(result.data.count).toBe(1);
+		expect(result.data.days).toHaveLength(1);
 
-		const day = result.days[0];
+		const day = result.data.days[0];
 		expect(day.date).toBe("2026-02-10");
 		expect(day.metrics.sleepScore).toBe(75);
 		expect(day.metrics.hrv.avg).toBe(40.0);
@@ -86,11 +86,11 @@ describe("getVitals", () => {
 	test("returns multiple days with consistent structure", async () => {
 		const result = await exec(getVitals, { days: 3 });
 
-		expect(result).not.toHaveProperty("error");
-		expect(result.count).toBeGreaterThanOrEqual(1);
-		expect(result.days.length).toBe(result.count);
+		expect(result.error).toBeNull();
+		expect(result.data.count).toBeGreaterThanOrEqual(1);
+		expect(result.data.days.length).toBe(result.data.count);
 
-		for (const day of result.days) {
+		for (const day of result.data.days) {
 			expect(day).toHaveProperty("date");
 			expect(day).toHaveProperty("metrics");
 			expect(day).toHaveProperty("summary");
@@ -101,8 +101,8 @@ describe("getVitals", () => {
 	test("caps days at maximum of 14", async () => {
 		const result = await exec(getVitals, { days: 100 });
 
-		expect(result).not.toHaveProperty("error");
-		expect(result.count).toBeLessThanOrEqual(14);
+		expect(result.error).toBeNull();
+		expect(result.data.count).toBeLessThanOrEqual(14);
 	});
 });
 
@@ -112,10 +112,10 @@ describe("getTrainingStatus", () => {
 	test("returns training readiness with factor breakdown", async () => {
 		const result = await exec(getTrainingStatus, { date: "2026-02-15" });
 
-		expect(result).not.toHaveProperty("error");
-		expect(result.date).toBe("2026-02-15");
+		expect(result.error).toBeNull();
+		expect(result.data.date).toBe("2026-02-15");
 
-		const { metrics } = result;
+		const { metrics } = result.data;
 		// Training readiness
 		expect(metrics.trainingReadiness.score).toBe(33);
 		expect(metrics.trainingReadiness.level).toBe("LOW");
@@ -148,12 +148,12 @@ describe("getTrainingStatus", () => {
 	test("returns latest data with analysis when no date specified", async () => {
 		const result = await exec(getTrainingStatus, {});
 
-		expect(result).not.toHaveProperty("error");
-		expect(result).toHaveProperty("date");
-		expect(result).toHaveProperty("metrics");
-		expect(result).toHaveProperty("analysis");
-		expect(typeof result.analysis).toBe("string");
-		expect(result.analysis.length).toBeGreaterThan(0);
+		expect(result.error).toBeNull();
+		expect(result.data).toHaveProperty("date");
+		expect(result.data).toHaveProperty("metrics");
+		expect(result.data).toHaveProperty("analysis");
+		expect(typeof result.data.analysis).toBe("string");
+		expect(result.data.analysis.length).toBeGreaterThan(0);
 	});
 });
 
@@ -182,8 +182,8 @@ describe("garminQuery", () => {
 				expect(typeof result.error).toBe("string");
 			} else {
 				// CLI available and responded — verify structured output
-				expect(result).toHaveProperty("command");
-				expect(result).toHaveProperty("description");
+				expect(result.data).toHaveProperty("command");
+				expect(result.data).toHaveProperty("description");
 			}
 		},
 		{ timeout: 35_000 },
@@ -346,22 +346,22 @@ describe("getSleepAnalysis", () => {
 	test("returns latest sleep analysis with summary metrics", async () => {
 		const result = await exec(getSleepAnalysis, { period: "latest" });
 
-		expect(result).not.toHaveProperty("error");
-		expect(result).toHaveProperty("periodCovered");
-		expect(result).toHaveProperty("dataPoints");
-		expect(result).toHaveProperty("summary");
-		expect(result).toHaveProperty("analysis");
-		expect(typeof result.analysis).toBe("string");
-		expect(result.analysis.length).toBeGreaterThan(0);
+		expect(result.error).toBeNull();
+		expect(result.data).toHaveProperty("periodCovered");
+		expect(result.data).toHaveProperty("dataPoints");
+		expect(result.data).toHaveProperty("summary");
+		expect(result.data).toHaveProperty("analysis");
+		expect(typeof result.data.analysis).toBe("string");
+		expect(result.data.analysis.length).toBeGreaterThan(0);
 	});
 
 	test("parses sleep summary with key metrics and trends", async () => {
 		const result = await exec(getSleepAnalysis, { period: "latest" });
 
-		expect(result.dataPoints).toBe(52);
-		expect(result.periodCovered).toBe("2025-12-18 to 2026-02-12");
+		expect(result.data.dataPoints).toBe(52);
+		expect(result.data.periodCovered).toBe("2025-12-18 to 2026-02-12");
 
-		const { summary } = result;
+		const { summary } = result.data;
 		expect(summary.overallScore).toBe(72);
 		expect(summary.overallTrend).toBe("declining");
 		expect(summary.keyMetrics.avgSleepScore).toBe(72);
@@ -376,7 +376,7 @@ describe("getSleepAnalysis", () => {
 	test("includes monthly trend breakdown", async () => {
 		const result = await exec(getSleepAnalysis, { period: "latest" });
 
-		const { monthlyTrend } = result.summary;
+		const { monthlyTrend } = result.data.summary;
 		expect(monthlyTrend).toHaveProperty("december");
 		expect(monthlyTrend).toHaveProperty("january");
 		expect(monthlyTrend).toHaveProperty("february");
@@ -394,10 +394,10 @@ describe("getSleepAnalysis", () => {
 	test("includes primary concerns in summary", async () => {
 		const result = await exec(getSleepAnalysis, { period: "latest" });
 
-		expect(Array.isArray(result.summary.primaryConcerns)).toBe(true);
-		expect(result.summary.primaryConcerns.length).toBeGreaterThan(0);
+		expect(Array.isArray(result.data.summary.primaryConcerns)).toBe(true);
+		expect(result.data.summary.primaryConcerns.length).toBeGreaterThan(0);
 		// Should flag REM and deep sleep issues
-		const concerns = result.summary.primaryConcerns.join(" ");
+		const concerns = result.data.summary.primaryConcerns.join(" ");
 		expect(concerns).toContain("REM");
 		expect(concerns).toContain("Deep sleep");
 	});
@@ -405,9 +405,9 @@ describe("getSleepAnalysis", () => {
 	test("defaults to latest period when called with no args", async () => {
 		const result = await exec(getSleepAnalysis, {});
 
-		expect(result).not.toHaveProperty("error");
-		expect(result).toHaveProperty("periodCovered");
-		expect(result).toHaveProperty("summary");
+		expect(result.error).toBeNull();
+		expect(result.data).toHaveProperty("periodCovered");
+		expect(result.data).toHaveProperty("summary");
 	});
 });
 

@@ -1,6 +1,11 @@
 "use client";
 
-import { ActionProvider, Renderer, StateProvider } from "@json-render/react";
+import {
+	ActionProvider,
+	Renderer,
+	StateProvider,
+	VisibilityProvider,
+} from "@json-render/react";
 import { registry } from "@/lib/json-render/registry";
 
 type HealthUIRendererProps = {
@@ -26,7 +31,9 @@ export function HealthUIRenderer({ title, spec }: HealthUIRendererProps) {
 			)}
 			<StateProvider initialState={{}}>
 				<ActionProvider handlers={{}}>
-					<Renderer registry={registry} spec={spec} />
+					<VisibilityProvider>
+						<Renderer registry={registry} spec={spec} />
+					</VisibilityProvider>
 				</ActionProvider>
 			</StateProvider>
 		</div>
